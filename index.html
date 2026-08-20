@@ -248,12 +248,18 @@ footer{
         <span class="count">2 files</span>
       </div>
       <div class="cards">
-        <a class="card" href="due-diligence/due-diligence-answer-engine.html">
+        <!-- DEMO INVITE: the portal is invite-only and shows a wall unless the
+             URL carries ?invite=<token> (see handleInviteGate() in the portal).
+             This card ships a demo invite so reviewers land on the pre-filled
+             sign-up card instead of the wall. Strip the query string once real
+             server-side invite tokens are in place. -->
+        <a class="card" href="due-diligence/due-diligence-answer-engine.html?invite=demo&amp;iname=Scout%20Underwood&amp;iemail=scout.underwood@plana.aero&amp;irole=Investor/lender&amp;iby=Duc">
           <span class="tag">Investor Portal</span>
           <h3>Due Diligence Answer Engine</h3>
           <p>Plans.aero investor data room &mdash; chat, search, browse FAQ and my questions,
-             running against the local seed data.</p>
-          <span class="path">due-diligence/due-diligence-answer-engine.html</span>
+             running against the local seed data. Opens with a demo invite so it
+             skips the invite-only wall.</p>
+          <span class="path">due-diligence/due-diligence-answer-engine.html?invite=demo&hellip;</span>
         </a>
         <a class="card" href="due-diligence/dd-admin.html">
           <span class="tag">Internal Admin</span>

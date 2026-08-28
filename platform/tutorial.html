@@ -87,8 +87,18 @@ a{color:inherit}
   font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
   color:var(--faint);padding-left:14px;border-left:1px solid var(--line);white-space:nowrap;
 }
+/* feedback trigger — quieter than the primary launch button beside it */
+.btn-ghost{
+  margin-left:auto;display:inline-flex;align-items:center;gap:7px;
+  border:1px solid var(--line);border-radius:8px;padding:0 12px;min-height:34px;
+  font-size:13px;font-weight:500;color:var(--muted);white-space:nowrap;
+  transition:background .15s,border-color .15s,color .15s;
+}
+.btn-ghost:hover{background:var(--raised);border-color:var(--line-strong);color:var(--text)}
+.btn-ghost svg{width:14px;height:14px;flex:none}
+.btn-ghost:hover svg{color:var(--brand-amber)}
 .open-app{
-  margin-left:auto;display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+  display:inline-flex;align-items:center;gap:7px;text-decoration:none;
   border:1px solid var(--line-strong);border-radius:8px;padding:0 13px;min-height:34px;
   font-size:13px;font-weight:500;background:var(--surface);white-space:nowrap;
   transition:background .15s,border-color .15s;
@@ -167,6 +177,43 @@ a{color:inherit}
 .tour.done .num{background:rgba(229,98,3,.18);color:#fff;border-color:rgba(229,98,3,.5)}
 .tour.done .state{color:var(--brand-amber)}
 
+/* ============ Feedback modal ============
+   Holds the Notion beta-feedback form in an iframe. The form itself is a
+   light Notion page, so the body stays white and the brand lives in the
+   frame around it. */
+.modal[hidden]{display:none}
+.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px}
+.modal-backdrop{position:absolute;inset:0;background:rgba(6,6,7,.72);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.modal-panel{
+  position:relative;display:flex;flex-direction:column;
+  width:min(780px,100%);height:min(860px,88vh);
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:16px;
+  box-shadow:0 28px 70px rgba(0,0,0,.62);overflow:hidden;
+  animation:modal-in .16s ease-out;
+}
+@keyframes modal-in{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.modal-panel{animation:none}}
+.modal-head{
+  display:flex;align-items:center;gap:12px;flex:none;
+  padding:14px 14px 14px 20px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#202023,var(--surface));
+}
+.modal-head h2{font-size:.9375rem;font-weight:600;letter-spacing:-.005em}
+.modal-head .sub{font-size:12px;color:var(--faint)}
+.modal-close{
+  margin-left:auto;width:32px;height:32px;flex:none;display:grid;place-items:center;
+  border:1px solid var(--line);border-radius:8px;color:var(--muted);
+  transition:background .15s,color .15s,border-color .15s;
+}
+.modal-close:hover{background:var(--raised);color:var(--text);border-color:var(--line-strong)}
+.modal-close svg{width:14px;height:14px}
+.modal-body{flex:1;min-height:0;background:#fff}
+.modal-body iframe{display:block;width:100%;height:100%;border:0}
+@media (max-width:520px){
+  .modal{padding:0}
+  .modal-panel{width:100%;height:100%;max-height:none;border-radius:0;border:0}
+}
+
 /* ============ Narrow / side-by-side ============ */
 @media (max-width:820px){
   .wrap{padding:0 18px}
@@ -174,6 +221,8 @@ a{color:inherit}
   .hero h1{font-size:1.75rem}
   .hero p{font-size:.9375rem}
   .topbar .eyebrow{display:none}
+  .btn-ghost span{display:none}
+  .btn-ghost{padding:0 10px}
   .tour{gap:14px;padding:17px}
   .tour .num{width:36px;height:36px;border-radius:9px;font-size:13px}
 }
@@ -191,6 +240,10 @@ a{color:inherit}
   <div class="wrap">
     <img src="Logo_Hyperspace_White_Beta.png" alt="PLANA Hyperspace — Beta">
     <span class="eyebrow">Tutorials</span>
+    <button class="btn-ghost" type="button" id="feedbackOpen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span>Feedback</span>
+    </button>
     <a class="open-app" href="platform.html" target="_blank" rel="noopener">
       <span>Open Hyperspace</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
@@ -304,6 +357,27 @@ a{color:inherit}
   </div>
 </main>
 
+<!-- ========================== FEEDBACK MODAL ==========================
+     The Notion form is only fetched the first time the modal is opened
+     (src is copied from data-src), so it costs nothing on page load. -->
+<div class="modal" id="feedbackModal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+    <div class="modal-head">
+      <h2 id="feedbackTitle">Beta feedback</h2>
+      <span class="sub">Bug, feature, revision or question</span>
+      <button class="modal-close" type="button" data-close aria-label="Close feedback">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <iframe id="feedbackFrame" title="PLANA Hyperspace Beta feedback form"
+              data-src="https://brandcraftsman.notion.site/ebd//3ca789f2554380a8ad2fc47ef8cb1b4d"
+              allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   /* Supademo popup embed — Step 2, wired up once for every .tour card so a new
@@ -325,6 +399,36 @@ a{color:inherit}
         state.textContent = "Tour player still loading — try again in a moment.";
       }
     });
+  });
+
+  /* ---------- feedback modal ---------- */
+  var modal   = document.getElementById("feedbackModal");
+  var frame   = document.getElementById("feedbackFrame");
+  var opener  = document.getElementById("feedbackOpen");
+  var closeBtn= modal.querySelector(".modal-close");
+
+  function openModal(){
+    /* fetch the Notion form on first open only */
+    if (!frame.getAttribute("src")) frame.setAttribute("src", frame.getAttribute("data-src"));
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    closeBtn.focus();
+  }
+  function closeModal(){
+    modal.hidden = true;
+    document.body.style.overflow = "";
+    opener.focus();
+  }
+
+  opener.addEventListener("click", openModal);
+
+  /* backdrop and the ✕ both carry data-close */
+  modal.addEventListener("click", function(e){
+    if (e.target.closest("[data-close]")) closeModal();
+  });
+
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && !modal.hidden) closeModal();
   });
 })();
 </script>

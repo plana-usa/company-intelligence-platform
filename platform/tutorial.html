@@ -81,7 +81,8 @@ a{color:inherit}
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
 }
 .topbar .wrap{display:flex;align-items:center;gap:16px;padding-top:12px;padding-bottom:12px}
-.topbar img{display:block;height:26px;width:auto;flex:none}
+/* beta lockup is a touch taller than the plain one — height keeps the wordmark the same size */
+.topbar img{display:block;height:28px;width:auto;flex:none}
 .topbar .eyebrow{
   font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
   color:var(--faint);padding-left:14px;border-left:1px solid var(--line);white-space:nowrap;
@@ -126,7 +127,7 @@ a{color:inherit}
 .section-head h2{font-size:1.0625rem;font-weight:600;letter-spacing:-.005em}
 .section-head .count{margin-left:auto;font-size:.75rem;color:var(--faint)}
 
-.tours{display:grid;gap:14px;padding-bottom:8px}
+.tours{display:grid;gap:14px;padding-bottom:64px}
 .tour{
   display:flex;gap:18px;align-items:flex-start;
   background:var(--surface);border:1px solid var(--line);border-radius:14px;
@@ -145,18 +146,13 @@ a{color:inherit}
 /* wide: the tour button sits at the right edge, copy keeps its own column */
 @media (min-width:821px){
   .tour .body{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:28px;align-items:center}
-  .tour h3,.tour p,.tour ul{grid-column:1}
-  .tour ul{margin-bottom:0}
-  .tour .actions{grid-column:2;grid-row:1 / span 3;justify-content:flex-end}
-  .tour .actions{flex-direction:column;align-items:flex-end;gap:8px}
+  .tour h3,.tour p{grid-column:1}
+  .tour p{margin-bottom:0}
+  .tour .actions{grid-column:2;grid-row:1 / span 2;justify-content:flex-end;
+    flex-direction:column;align-items:flex-end;gap:8px}
 }
 .tour h3{font-size:1rem;font-weight:600;letter-spacing:-.005em;margin-bottom:6px}
 .tour p{color:var(--muted);font-size:.875rem;line-height:1.6;margin-bottom:12px;max-width:60ch}
-.tour ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.tour ul li{
-  font-size:11px;color:var(--muted);border:1px solid var(--line);
-  border-radius:999px;padding:3px 9px;background:rgba(255,255,255,.02);
-}
 .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .btn-tour{
   display:inline-flex;align-items:center;gap:8px;
@@ -170,14 +166,6 @@ a{color:inherit}
 .tour.done{border-color:rgba(229,98,3,.45)}
 .tour.done .num{background:rgba(229,98,3,.18);color:#fff;border-color:rgba(229,98,3,.5)}
 .tour.done .state{color:var(--brand-amber)}
-
-/* ============ Footer ============ */
-footer{
-  margin:44px 0 0;padding:20px 0 60px;border-top:1px solid var(--line);
-  font-size:.75rem;color:var(--faint);line-height:1.7;
-}
-footer a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
-footer a:hover{color:var(--text);border-color:var(--brand-orange)}
 
 /* ============ Narrow / side-by-side ============ */
 @media (max-width:820px){
@@ -201,7 +189,7 @@ footer a:hover{color:var(--text);border-color:var(--brand-orange)}
 <!-- ============================== TOP BAR ============================== -->
 <header class="topbar">
   <div class="wrap">
-    <img src="Logo_Hyperspace%20White.png" alt="PLANA Hyperspace">
+    <img src="Logo_Hyperspace_White_Beta.png" alt="PLANA Hyperspace — Beta">
     <span class="eyebrow">Tutorials</span>
     <a class="open-app" href="platform.html" target="_blank" rel="noopener">
       <span>Open Hyperspace</span>
@@ -214,7 +202,7 @@ footer a:hover{color:var(--text);border-color:var(--brand-orange)}
 <section class="hero">
   <div class="wrap">
     <div class="pill"><span class="dot"></span>Guided tours</div>
-    <h1>Learn Hyperspace in four tours.</h1>
+    <h1>Learn Hyperspace Beta in four tours.</h1>
     <p>
       Each tour is a click-through walkthrough of the real interface &mdash; it opens right
       here on top of this page, so you can run it as many times as you like. Start at the
@@ -249,7 +237,6 @@ footer a:hover{color:var(--text);border-color:var(--brand-orange)}
           Your first run through Hyperspace &mdash; what the workspace is, how the pieces
           fit together, and where to go first.
         </p>
-        <ul><li>First sign-in</li><li>The lay of the land</li><li>Where to start</li></ul>
         <div class="actions">
           <button class="btn-tour" type="button">
             Try the tour
@@ -268,7 +255,6 @@ footer a:hover{color:var(--text);border-color:var(--brand-orange)}
           The rail that runs the app &mdash; dashboard views, the launchpad out to the other
           tools, and the discovery section underneath.
         </p>
-        <ul><li>Dashboard views</li><li>Launchpad</li><li>Discovery</li></ul>
         <div class="actions">
           <button class="btn-tour" type="button">
             Try the tour
@@ -287,7 +273,6 @@ footer a:hover{color:var(--text);border-color:var(--brand-orange)}
           Ask the company brain a question and read the answer the way it was built &mdash;
           grounded in your sources and traced back to where each claim came from.
         </p>
-        <ul><li>Asking well</li><li>Grounded answers</li><li>Citations to source</li></ul>
         <div class="actions">
           <button class="btn-tour" type="button">
             Try the tour
@@ -306,7 +291,6 @@ footer a:hover{color:var(--text);border-color:var(--brand-orange)}
           Decisions, risks, blockers and follow-ups pulled out of the workspace &mdash; how to
           filter the view down and open any item back to its source.
         </p>
-        <ul><li>Reading an insight</li><li>Filtering the view</li><li>Back to source</li></ul>
         <div class="actions">
           <button class="btn-tour" type="button">
             Try the tour
@@ -318,12 +302,6 @@ footer a:hover{color:var(--text);border-color:var(--brand-orange)}
     </article>
 
   </div>
-
-  <footer>
-    Tours are hosted on Supademo and open in an overlay on this page &mdash; nothing you do
-    inside a tour touches live data. Something out of date or a step that no longer matches
-    the app? Send it over and it gets re-recorded.
-  </footer>
 </main>
 
 <script>

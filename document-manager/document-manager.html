@@ -88,6 +88,11 @@
 .drawer-approve .btn-approve{min-height:var(--ctl-h-lg);font-size:var(--fs-md)}
 .btn-approve{flex:1;justify-content:center;background:rgba(63,185,80,.12);border-color:var(--success);color:#7bd88f;font-weight:700}
 .btn-approve:hover{background:var(--success);color:#04140a;border-color:var(--success)}
+/* archive: low-key, footer-left; archived cards only show in the archived view */
+.archive-btn{color:var(--faint);border-color:transparent;margin-right:auto}
+.archive-btn:hover{color:var(--danger);background:var(--raised)}
+.ovl-foot .who{flex:1}
+.doc.archived{opacity:.7;border-style:dashed}
 /* assembly roll-up */
 .rollup{display:flex;align-items:center;gap:6px;font-size:var(--fs-label);color:var(--muted);margin-top:8px}
 .rollup .bar{flex:1;height:3px;border-radius:2px;background:var(--line);overflow:hidden;max-width:110px}
@@ -374,6 +379,7 @@
   </div>
   <div class="ovl-body" id="dBody"></div>
   <div class="ovl-foot">
+    <button class="btn btn-ghost btn-sm archive-btn" id="dArchive" title="Remove from the board — kept in the record, restorable">⌫ Archive</button>
     <span class="who" id="dFootNote">Status moves are logged with your name and timestamp.</span>
     <button class="btn" id="dOpenDrive">Open in Drive ↗</button>
     <button class="btn btn-brand" id="dNewVersion">⇪ New version</button>
@@ -531,6 +537,7 @@ let DOCS = [
 
 /* ===== state ===== */
 let dOpen={desc:false,own:false,versions:false,tree:false,history:false}, dLinking=false, dEditing=false, dRaciEdit=false;
+let showArchived=false;
 let role='scout', view='board', reviewing=false, reviewDays=14, sortK='updated', sortDir=-1, openId=null;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const byId=id=>DOCS.find(x=>x.id===id);
@@ -558,12 +565,16 @@ const isComplete=doc=>doc.status==='released'&&rollup(doc.id).complete;
 
 /* ===== filters ===== */
 function filtered(){ const q=$('#q').value.trim().toLowerCase(), wp=$('#fWp').value, who=$('#fWho').value, ty=$('#fType').value, lv=$('#fLvl').value, mine=$('#fMine').checked;
-  return DOCS.filter(x=>(!wp||x.wp===wp)&&(!who||x.by===who)&&(!ty||x.type===ty)&&(!lv||x.level===lv)&&(!mine||x.by===role)&&
+  return DOCS.filter(x=>(showArchived?!!x.archived:!x.archived)&&(!wp||x.wp===wp)&&(!who||x.by===who)&&(!ty||x.type===ty)&&(!lv||x.level===lv)&&(!mine||x.by===role)&&
     (!q||x.title.toLowerCase().includes(q)||x.id.toLowerCase().includes(q)||x.versions.some(v=>v.file.toLowerCase().includes(q)))); }
 
 /* ===== render ===== */
 function render(){ const list=filtered();
-  $('#counts').innerHTML=`<b>${list.length}</b> of ${DOCS.length} documents · <b>${DOCS.filter(x=>x.status==='review').length}</b> waiting on Braden`;
+  const nArch=DOCS.filter(x=>x.archived).length, live=DOCS.filter(x=>!x.archived).length;
+  $('#counts').innerHTML=showArchived?`<b>${list.length}</b> archived · <button class="btn-link" id="archBack" style="font-size:12.5px">← back to board</button>`
+    :`<b>${list.length}</b> of ${live} documents · <b>${DOCS.filter(x=>x.status==='review'&&!x.archived).length}</b> waiting on Braden${nArch?` · <button class="btn-link" id="archShow" style="font-size:12.5px;color:var(--faint)">${nArch} archived</button>`:''}`;
+  const ab=$('#archBack'), as=$('#archShow'); if(ab)ab.onclick=()=>{showArchived=false;render()}; if(as)as.onclick=()=>{showArchived=true;render()};
+  $('#feedTitle').textContent=showArchived?'Archived documents':(reviewing?'Bi-weekly review':'Engineering deliverables');
   $('#sideReviewCnt').textContent=DOCS.filter(x=>x.status==='review').length;
   $('#board').hidden=view!=='board'; $('#tableWrap').hidden=view!=='table';
   $('#board').classList.toggle('reviewing',reviewing); $('#table').classList.toggle('reviewing',reviewing);
@@ -575,9 +586,9 @@ function cardHTML(x){ const v=cur(x), r=rollup(x.id), parent=x.parents.map(p=>by
   let roll=''; if(r.total){ roll=`<div class="rollup ${r.complete?'done':''}" title="${r.done} of ${r.total} subassemblies released">
       <span>⌬ ${r.done}/${r.total} ${r.total===1?'subassembly':'subassemblies'} released</span><span class="bar"><i style="width:${r.total?100*r.done/r.total:0}%"></i></span></div>`; }
   const flag=flagged?`<div class="flag mt-1">⚠ Released but ${r.total-r.done} ${r.total-r.done===1?'subassembly is':'subassemblies are'} still open</div>`:'';
-  return `<article class="doc ${flagged?'flagged':''} ${ch?'changed':''}" draggable="${canDrag(x)}" tabindex="0" data-id="${x.id}" role="button" aria-label="${esc(x.title)}">
+  return `<article class="doc ${flagged?'flagged':''} ${ch?'changed':''} ${x.archived?'archived':''}" draggable="${canDrag(x)}" tabindex="0" data-id="${x.id}" role="button" aria-label="${esc(x.title)}">
     <div class="d-top"><span class="ftype ${x.type}">${TYPE_LBL[x.type]}</span><h4>${esc(x.title)}</h4><span class="ver">v${v.v}</span></div>
-    <div class="d-meta"><span class="chip outline">${x.wp}</span>${lvlChip(x.level)}${parent.map(p=>`<span class="chip dashed has-tip" data-tip="Part of ${esc(p.title)}">⌬ ${p.id}</span>`).join('')}
+    <div class="d-meta">${x.archived?'<span class="chip dashed">archived</span>':''}<span class="chip outline">${x.wp}</span>${lvlChip(x.level)}${parent.map(p=>`<span class="chip dashed has-tip" data-tip="Part of ${esc(p.title)}">⌬ ${p.id}</span>`).join('')}
       ${ch?`<span class="delta">● ${deltaLabel(x)}</span>`:''}</div>
     ${roll}${flag}
     ${role==='braden'&&x.status==='review'?`<div class="approve-row"><button class="btn btn-approve" data-approve="${x.id}">✓ Approve &amp; release</button><button class="btn btn-sm btn-ghost" data-sendback="${x.id}" title="Send back to Work in progress">↩ Send back</button></div>`:''}
@@ -720,12 +731,18 @@ function openDoc(id,keep){ const x=byId(id); if(!x)return; if(!keep&&openId!==id
   linkIn.onfocus=()=>linkIn.oninput(); linkIn.onkeydown=e=>{if(e.key==='Escape'){e.stopPropagation();dLinking=false;openDoc(id,true)}};
   $('#linkCancel').addEventListener('click',()=>{dLinking=false;openDoc(id,true)});
   $$('#dBody [data-unlink]').forEach(b=>b.addEventListener('click',()=>{ const pid=b.dataset.unlink; x.parents=x.parents.filter(z=>z!==pid); x.history.push({what:'Unlinked from '+pid,by:role,at:new Date(TODAY)}); render(); openDoc(id,true); toast(`${x.id} removed from ${pid}`); }));
+  $('#dArchive').textContent=x.archived?'↩ Restore to board':'⌫ Archive'; $('#dArchive').title=x.archived?'Put this document back on the board':'Remove from the board — kept in the record, restorable';
   $('#dFootNote').textContent=role==='braden'?'You can release from here. Moves are logged with your name and timestamp.':'Status moves are logged with your name and timestamp. Release is Braden\'s call.';
   if(!keep){$('#drawer').classList.add('show');$('#drawerScrim').classList.add('show');$('#drawerClose').focus()} }
 function closeDrawer(){$('#drawer').classList.remove('show');$('#drawerScrim').classList.remove('show');openId=null}
 $('#drawerClose').onclick=closeDrawer; $('#drawerScrim').onclick=closeDrawer;
 $('#dNewVersion').onclick=()=>openUpload('version',openId);
 $('#dOpenDrive').onclick=()=>toast('Opens the current version in Google Drive');
+function archiveDoc(id,undo){ const x=byId(id); if(!x)return; x.archived=!undo; x.history.push({what:undo?'Restored to board':'Archived',by:role,at:new Date(TODAY)});
+  if(!undo){ closeDrawer(); render(); const h=$('#toastHost'); h.innerHTML=`<div class="toast"><span class="tdot"></span>${esc(x.id)} archived — off the board, still in the record <button class="toast-link" id="undoArch">Undo</button></div>`;
+    $('#undoArch').onclick=()=>archiveDoc(id,true); clearTimeout(h._t); h._t=setTimeout(()=>h.innerHTML='',6000); }
+  else { render(); if(openId===id)openDoc(id,true); toast(`${x.id} restored to the board`,'success'); } }
+$('#dArchive').onclick=()=>{ const x=byId(openId); if(!x)return; if(x.archived)archiveDoc(openId,true); else archiveDoc(openId,false); };
 
 /* ===== upload modal ===== */
 let upMode='new', upTarget=null, upParentsSel=[], upFile=null;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PLANA KMS ERP</title>
+<title>PLANA Intelligence Operating System</title>
 
 <!--
   =========================================================================
@@ -61,6 +61,7 @@ body{
 /* ============ Logo lockup ============ */
 .lockup{display:flex;align-items:center;gap:10px}
 .lockup svg{width:22px;height:22px;display:block}
+.lockup .logo-hs{display:block;height:38px;width:auto;margin-left:-4px}
 .lockup .word{
   font-size:1.0625rem;font-weight:500;letter-spacing:.28em;
   text-transform:uppercase;line-height:1;padding-left:.06em;
@@ -165,11 +166,10 @@ footer{
 <div class="gate" id="gate">
   <div class="gate-card">
     <div class="lockup">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e50602"/><stop offset="1" stop-color="#e56203"/></linearGradient></defs><polygon fill="url(#lg1)" points="12,.5 13.25,9.83 19.97,7.4 14.5,12 19.97,16.6 13.25,14.17 12,23.5 10.75,14.17 4.03,16.6 9.5,12 4.03,7.4 10.75,9.83"/></svg>
-      <span class="word">Plana</span>
+      <img class="logo-hs" src="platform/Logo_Hyperspace_White_Beta.png" alt="PLANA Hyperspace Beta">
     </div>
 
-    <h1>PLANA KMS ERP</h1>
+    <h1>Intelligence Operating System</h1>
     <p class="sub">This index is restricted. Enter the access password to view the contents.</p>
 
     <form id="gate-form" autocomplete="off">
@@ -221,23 +221,6 @@ footer{
              versioning by Hyperspace ID with change summaries, multi-parent assembly tree with completeness roll-up,
              hierarchy levels, RACI ownership, and a &ldquo;since last review&rdquo; mode for the bi-weekly.</p>
           <span class="path">document-manager/document-manager.html</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="folder">
-      <div class="folder-head">
-        <h2>Acquisition</h2>
-        <code>/acquisition</code>
-        <span class="count">1 file</span>
-      </div>
-      <div class="cards">
-        <a class="card" href="acquisition/acquisition-doc-studio.html">
-          <span class="tag">Doc Studio</span>
-          <h3>Acquisition Doc Studio</h3>
-          <p>Program knowledge base for controlled documents &mdash; currency and conflict
-             tracking, artifact templates, brief editor, release and export.</p>
-          <span class="path">acquisition/acquisition-doc-studio.html</span>
         </a>
       </div>
     </section>
@@ -313,6 +296,23 @@ footer{
       </div>
     </section>
 
+    <section class="folder">
+      <div class="folder-head">
+        <h2>Acquisition</h2>
+        <code>/acquisition</code>
+        <span class="count">1 file</span>
+      </div>
+      <div class="cards">
+        <a class="card" href="acquisition/acquisition-doc-studio.html">
+          <span class="tag">Doc Studio</span>
+          <h3>Acquisition Doc Studio</h3>
+          <p>Program knowledge base for controlled documents &mdash; currency and conflict
+             tracking, artifact templates, brief editor, release and export.</p>
+          <span class="path">acquisition/acquisition-doc-studio.html</span>
+        </a>
+      </div>
+    </section>
+
     <footer>
       Prototypes and wireframes. Links are relative, so this index works on GitHub Pages
       and from a local clone alike.
@@ -323,7 +323,7 @@ footer{
 <script>
 (function(){
   /* SHA-256 of the access password. Obfuscation only — see the note in the gate. */
-  var HASH = "fbfe9a67ff51a77967120e9d69f3e22f1d2b59bd50c99f5128ad332088f0123b";
+  var HASH = "d1b2a59fbea7e20077af9f91b27e95e865061b270be03ff539ab3b73587882e8";
 
   var form = document.getElementById("gate-form");
   var pw   = document.getElementById("pw");
@@ -343,7 +343,7 @@ footer{
   function unlock(){
     gate.style.display = "none";
     toc.classList.add("show");
-    document.title = "PLANA KMS ERP";
+    document.title = "PLANA Intelligence Operating System";
     window.scrollTo(0, 0);
   }
 

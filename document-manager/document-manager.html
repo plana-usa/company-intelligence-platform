@@ -215,6 +215,48 @@
 .rollup-line b{color:var(--text)}
 .rollup-line.ok{border-color:rgba(63,185,80,.45);color:#7bd88f}
 .rollup-line.flag{border-color:rgba(229,6,2,.45);background:rgba(229,6,2,.06);color:var(--danger)}
+/* FAA compliance references — each row mirrors a card in the synced FAA Compliance Library
+   (id · type · gate · status · title · source · checked) plus the engineer's justification, which only lives here */
+.faa-row{border:1px solid var(--line);border-radius:var(--r-lg);padding:10px 12px;margin-bottom:8px;background:var(--surface-lo);position:relative}
+.faa-row:hover{border-color:var(--line-strong)}
+.faa-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.faa-id{font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:700;color:var(--text);letter-spacing:.02em}
+.faa-top .chip{font-size:10px;min-height:18px;padding:1px 6px}
+.chip.ftype-chip{font-family:var(--font-mono);font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.chip.faa-stat.final{color:#7bd88f;border-color:rgba(63,185,80,.4)}
+.chip.faa-stat.needs{color:var(--brand-amber);border-color:rgba(241,138,66,.5)}
+.faa-top .faa-open{margin-left:auto;min-height:24px;padding:0 8px;font-size:var(--fs-label)}
+.faa-row:hover .unlink,.faa-row .unlink:focus-visible{opacity:1}
+.faa-title{font-size:var(--fs-md);font-weight:600;color:var(--text);margin-top:6px;line-height:1.35}
+.faa-why{font-size:var(--fs-sm);color:var(--text);line-height:1.55;margin-top:7px;padding-left:10px;border-left:2px solid var(--brand-orange)}
+.faa-why.none{color:var(--faint);border-left-color:var(--line-strong);font-style:italic}
+.faa-by{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:var(--fs-label);color:var(--faint);margin-top:8px}
+.faa-by b{color:var(--muted);font-weight:600}
+.faa-by .stale{color:var(--brand-amber)}
+.faa-foot{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:var(--fs-label);color:var(--faint);margin-top:4px;padding-top:8px;border-top:1px dashed var(--line)}
+.faa-foot a{color:var(--muted)}
+.faa-foot a:hover{color:var(--text)}
+.cite-pick{border:1px solid rgba(229,98,3,.4);background:rgba(229,98,3,.05);border-radius:var(--r-lg);padding:10px 12px;margin-bottom:8px}
+.cite-pick .input{min-height:var(--ctl-h-lg)}
+.cite-list{max-height:230px;overflow:auto;margin-top:8px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface-lo);padding:4px}
+.cite-list .lbl{font-size:var(--fs-micro);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;padding:8px 8px 3px}
+.cite-list label{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:var(--r-sm);font-size:var(--fs-sm);color:var(--text);cursor:pointer;min-height:32px}
+.cite-list label:hover{background:var(--surface)}
+.cite-list label.on{background:rgba(229,98,3,.08)}
+.cite-list label[hidden]{display:none}
+.cite-list input{accent-color:var(--brand-orange);width:14px;height:14px;flex-shrink:0;margin:0}
+.cite-list .pk-t{flex:1}
+.cite-list .empty{padding:14px}
+.cite-sel{margin-top:10px}
+.cite-sel .sel-row{border-top:1px dashed var(--line);padding:10px 0 2px}
+.cite-sel .sel-row textarea{margin-top:6px;min-height:56px;width:100%}
+.cite-sel .sel-row .unlink{opacity:1;margin-left:auto}
+.cite-sel .faa-id{font-size:var(--fs-sm)}
+.cite-pick .input{min-height:var(--ctl-h-lg)}
+.pick-list .ftype-chip{font-family:var(--font-mono);font-size:9px;font-weight:800;border:1px solid var(--line-strong);border-radius:4px;padding:1px 5px;color:var(--muted);flex-shrink:0}
+.pick-list .pk-gate{font-size:var(--fs-micro);color:var(--faint);flex-shrink:0;margin-left:auto;font-family:var(--font-mono)}
+.pick-list .pk-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.doc .chip.faa-n{color:var(--muted)}
 /* history */
 .hist{font-size:var(--fs-xs);color:var(--muted);line-height:1.7}
 .hist b{color:var(--text);font-weight:600}
@@ -239,8 +281,19 @@
 .auto-meta div{font-size:var(--fs-xs);color:var(--muted)}
 .auto-meta b{display:block;color:var(--text);font-weight:600;font-family:var(--font-mono);font-size:var(--fs-xs)}
 .auto-meta .l{font-size:var(--fs-micro);letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:700}
-.mode-switch .seg{width:100%}
-.mode-switch .seg button{flex:1}
+.up-faa .tag{font-family:var(--font-mono);font-size:var(--fs-xs)}
+.up-faa-why{margin-top:8px}
+.up-faa-why .sel-row{display:grid;grid-template-columns:150px 1fr;gap:8px 12px;align-items:start;padding:8px 0;border-top:1px dashed var(--line)}
+.up-faa-why .sel-row:first-child{border-top:0;padding-top:4px}
+.up-faa-why .faa-id{font-size:var(--fs-xs);padding-top:8px;line-height:1.3}
+.up-faa-why .faa-id small{display:block;font-family:var(--font-sans);font-weight:400;color:var(--faint);font-size:var(--fs-micro);margin-top:2px}
+.up-faa-why textarea{min-height:40px;padding:7px 10px;font-size:var(--fs-sm)}
+.up-faa-why textarea.locked{opacity:.6}
+.up-target{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid rgba(229,98,3,.45);background:rgba(229,98,3,.06);border-radius:var(--r-lg)}
+.up-target .ftype{width:30px;height:30px;border-radius:var(--r-sm);display:grid;place-items:center;font-size:9.5px;font-weight:800;border:1px solid var(--line-strong);color:var(--muted);background:var(--surface-lo);flex-shrink:0}
+.up-target b{font-size:var(--fs-md);font-weight:600;display:block;line-height:1.3}
+.up-target .serial{position:static;padding:0}
+.up-target .cur{margin-left:auto;font-family:var(--font-mono);font-size:var(--fs-label);color:var(--muted);white-space:nowrap}
 /* success state inside the modal */
 .pipe{display:flex;align-items:center;gap:0;margin:14px 0 4px;flex-wrap:wrap;row-gap:10px}
 .pipe .node{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:76px;font-size:var(--fs-label);color:var(--muted);text-align:center}
@@ -265,7 +318,7 @@
   <nav class="sidebar" aria-label="Workspace">
     <div class="ws">
       <button class="btn side-collapse" id="sideCollapse" aria-label="Collapse sidebar" title="Collapse sidebar">«</button>
-      <img src="../platform/Logo_Hyperspace_White_Beta.png" alt="PLANA Hyperspace">
+      <img src="../platform/Logo-hyperspace-white.png" alt="PLANA Hyperspace">
       <div class="ws-sub">Intelligence Operating System</div>
     </div>
     <div class="side-scroll">
@@ -325,7 +378,7 @@
         <span class="qsep">·</span>
         <span class="qf"><select class="quiet" id="fLvl" aria-label="Hierarchy level"><option value="">Any level</option><option value="aircraft">L1 · Aircraft</option><option value="system">L2 · System</option><option value="subsystem">L3 · Subsystem</option><option value="component">L4 · Component</option></select></span>
         <span class="qsep">·</span>
-        <span class="qf"><select class="quiet" id="fType" aria-label="File type"><option value="">Any type</option><option value="pdf">PDF</option><option value="gdoc">Google Doc</option><option value="gsheet">Google Sheet</option><option value="cad">3D / CAD</option></select></span>
+        <span class="qf"><select class="quiet" id="fType" aria-label="File type"><option value="">Any type</option><option value="pdf">PDF</option><option value="gdoc">Google Doc</option><option value="gsheet">Google Sheet</option><option value="cad">3D / CAD</option><option value="doc">Document</option><option value="xls">Spreadsheet</option><option value="img">Image</option><option value="file">Other</option></select></span>
         <span class="qsep">·</span>
         <label class="check" style="min-height:30px;font-size:var(--fs-sm);color:var(--muted)"><input type="checkbox" id="fMine"> Mine</label>
       </div>
@@ -391,20 +444,10 @@
 <div class="ovl" id="upOvl" role="dialog" aria-modal="true" aria-labelledby="upTitle">
   <div class="ovl-head"><h5 id="upTitle">Upload to Hyperspace</h5><button class="ovl-close" id="upClose" aria-label="Close">✕</button></div>
   <div class="ovl-body" id="upBody">
-    <div class="field mode-switch">
-      <label>What is this?</label>
-      <div class="seg" id="upMode" role="group">
-        <button aria-pressed="true" data-mode="new">New document</button>
-        <button aria-pressed="false" data-mode="version">New version of an existing document</button>
-      </div>
-    </div>
     <div class="field" id="upExistingWrap" hidden>
-      <label>Existing document <span class="req">*</span></label>
-      <div class="pick-wrap">
-        <input class="input" id="upExisting" placeholder="Search by title or ID…" autocomplete="off">
-        <div class="pick-list" id="upExistingList"></div>
-      </div>
-      <div class="hint" id="upExistingHint">The filename can change — the Hyperspace ID is the anchor.</div>
+      <label>New version of</label>
+      <div class="up-target" id="upTarget"></div>
+      <div class="hint">Revisions are only started from a record's drawer, so the target can't be mistaken. The filename can change — the Hyperspace ID is the anchor.</div>
     </div>
     <div class="field">
       <label>File <span class="req">*</span></label>
@@ -425,13 +468,19 @@
     <div class="row gap-lg" style="align-items:flex-start">
       <div class="field grow"><label>Work package <span class="req">*</span></label><select id="upWp"></select></div>
       <div class="field grow"><label>Hierarchy level <span class="req">*</span></label><select id="upLvl"><option value="">Choose…</option><option value="aircraft">L1 · Aircraft</option><option value="system">L2 · System</option><option value="subsystem">L3 · Subsystem</option><option value="component">L4 · Component</option></select><div class="hint" id="upLvlHint" hidden></div></div>
-      <div class="field grow"><label>File type</label><select id="upType"><option value="pdf">PDF</option><option value="gdoc">Google Doc</option><option value="gsheet">Google Sheet</option><option value="cad">3D / CAD</option></select></div>
     </div>
     <div class="field">
       <label>Part of (assembly / system)</label>
       <div class="tagf" id="upParents"><input class="tag-in" id="upParentIn" placeholder="Type to add a parent document…" autocomplete="off"></div>
       <div class="pick-wrap"><div class="pick-list" id="upParentList"></div></div>
       <div class="hint">A document can belong to more than one assembly. Parents aren't complete until every child is released.</div>
+    </div>
+    <div class="field up-faa">
+      <label>FAA compliance references</label>
+      <div class="tagf" id="upFaa"><input class="tag-in" id="upFaaIn" placeholder="Search the FAA Compliance Library — 14 CFR, AC, Order…" autocomplete="off"></div>
+      <div class="pick-wrap"><div class="pick-list" id="upFaaList"></div></div>
+      <div class="up-faa-why" id="upFaaWhy"></div>
+      <div class="hint">Which rules, ACs or orders this document's design decisions answer to. Say why for each — Braden reads it at review.</div>
     </div>
     <div class="field">
       <label>Change summary <span class="req" id="upNoteReq" hidden>*</span></label>
@@ -444,6 +493,7 @@
         <div><span class="l">Date / time</span><b id="amWhen">—</b></div>
         <div><span class="l">Hyperspace ID</span><b id="amId">DOC-0000</b></div>
         <div><span class="l">Version</span><b id="amVer">v1</b></div>
+      <div><span class="l">File type <span class="faint" style="text-transform:none;letter-spacing:0">· detected</span></span><b id="amType">—</b></div>
       </div>
     </div>
   </div>
@@ -482,11 +532,47 @@ const raciOf=x=>x.raci||{r:[x.by],a:['braden'],c:[...new Set(x.parents.map(byId)
 const raciProv=x=>x.raciBy?`<span class="chip prov-ico has-tip" data-tip="Human verified — ${PEOPLE[x.raciBy].name} · ${fmtDT(x.raciAt)}" aria-label="Verified by ${PEOPLE[x.raciBy].name}"><svg width="13" height="13" viewBox="0 0 24 24" fill="#3fb950" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8z"/></svg></span>`
   :`<span class="chip prov-ico has-tip" data-tip="AI suggested from contributor, reviewer and parent assemblies — not yet verified" aria-label="AI suggested">✨</span>`;
 const lvlChip=(k,extra='')=>k&&LEVELS[k]?`<span class="chip lvl lvl-${k} ${extra}" title="Level ${LEVELS[k].n} — ${LEVELS[k].l} level"><i>L${LEVELS[k].n}</i>${LEVELS[k].l}</span>`:'';
+/* FAA Compliance Library — mirror of the synced library at faa-compliance26.ai.studio (21 documents across the ten
+   certification gates). The future library system owns these records and keeps them checked against the FAA; the
+   document manager only cites them. The library id is the citation anchor, exactly like DOC-#### is for our own records. */
+const GATES={1:'Concept & Applicability',2:'Certification Basis (G-1 / G-2)',3:'Means of Compliance',4:'Certification Plan (PSCP)',5:'Design & Compliance Data',
+  6:'Ground Test & Analysis',7:'Flight Test Readiness',8:'Type Inspection Authorization',9:'Compliance Findings & ICA',10:'Type Certificate Issuance'};
+const FAA_CHECKED=new Date('2026-08-11T00:00:00-07:00');
+const FAA_LIB_URL='https://faa-compliance26.ai.studio/';
+const FAA_LIB=[
+  {id:'14 CFR Part 21',type:'CFR',gate:2,status:'final',title:'Certification Procedures for Products',url:'https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-21'},
+  {id:'Order 8110.4C',type:'Order',gate:2,status:'final',title:'Type Certification',url:'https://www.faa.gov/regulations_policies/orders_notices/index.cfm/go/document.information/documentid/15172'},
+  {id:'AC 21.101-1',type:'AC',gate:3,status:'final',title:'Certification Basis of Changed Products',url:'https://drs.faa.gov/browse'},
+  {id:'AC 21.17-4',type:'AC',gate:3,status:'final',title:'Type Certification—Powered-lift',url:'https://drs.faa.gov/browse/excelExternalWindow/DRSDOCID189335550620250721165859.0001'},
+  {id:'Order 8110.48A',type:'Order',gate:3,status:'final',title:'Establish Certification Basis',url:'https://www.faa.gov/documentLibrary/media/Order/FAA_Order_8110_48A.pdf'},
+  {id:'PS-AIR-21.17-01',type:'Policy',gate:3,status:'final',title:'Safety Continuum for Powered-lift',url:'https://drs.faa.gov/browse'},
+  {id:'14 CFR Part 23',type:'CFR',gate:5,status:'final',title:'Airworthiness Standards: Normal Airplanes',url:'https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-23'},
+  {id:'14 CFR Part 27',type:'CFR',gate:5,status:'final',title:'Airworthiness Standards: Normal Rotorcraft',url:'https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-27'},
+  {id:'14 CFR Part 33',type:'CFR',gate:5,status:'final',title:'Airworthiness Standards: Aircraft Engines',url:'https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-33'},
+  {id:'14 CFR Part 35',type:'CFR',gate:5,status:'final',title:'Airworthiness Standards: Propellers',url:'https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-35'},
+  {id:'14 CFR Part 36',type:'CFR',gate:5,status:'final',title:'Noise Standards: Aircraft Certification',url:'https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-36'},
+  {id:'Order 8110.112A',type:'Order',gate:5,status:'final',title:'Issue Papers & ELOS Memos',url:'https://www.faa.gov/regulations_policies/orders_notices/index.cfm/go/document.information/documentid/1025806'},
+  {id:'14 CFR Part 39',type:'CFR',gate:9,status:'final',title:'Airworthiness Directives',url:'https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-39'},
+  {id:'14 CFR Part 43',type:'CFR',gate:9,status:'final',title:'Maintenance, Preventive Maintenance',url:'https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-43'},
+  {id:'Order 8110.54',type:'Order',gate:9,status:'final',title:'Instructions for Continued Airworthiness',url:'https://www.faa.gov/regulations_policies/orders_notices/'},
+  {id:'AC 21-43',type:'AC',gate:10,status:'final',title:'Production Under 14 CFR Part 21',url:'https://drs.faa.gov/browse'},
+  {id:'AC 45-2 / Part 45',type:'AC',gate:10,status:'final',title:'Identification and Registration Marking',url:'https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-45'},
+  {id:'Order 8120.22B',type:'Order',gate:10,status:'final',title:'Production Approval Procedures',url:'https://www.faa.gov/documentLibrary/media/Order/Order_8120.22B.pdf'},
+  {id:'Order 8120.23B',type:'Order',gate:10,status:'final',title:'Certificate Management of PAH',url:'https://www.faa.gov/regulations_policies/orders_notices/index.cfm/go/document.information/documentID/1045237'},
+  {id:'Order 8130.2',type:'Order',gate:10,status:'final',title:'Airworthiness Certification of Aircraft',url:'https://www.faa.gov/regulations_policies/orders_notices/'},
+  {id:'SFAR 120',type:'SFAR',gate:10,status:'final',title:'Powered-Lift Pilot Cert & Operations',url:'https://www.federalregister.gov/agencies/federal-aviation-administration'},
+];
+const faaOf=id=>FAA_LIB.find(f=>f.id===id);
+const faaDays=()=>Math.round((TODAY-FAA_CHECKED)/864e5);
+const gateNo=g=>'Gate '+String(g).padStart(2,'0');
 let DOCS = [
   {id:'DOC-0131',desc:'Index for the Level 1 sizing deliverable set. Scope: the aircraft-level sizing baseline (range, payload, MTOW) that every WP-01 subsystem budget inherits from. Out of scope: detailed subsystem design.',level:'aircraft',title:'Level 1 sizing package',type:'gdoc',wp:'WP-01',status:'wip',by:'jeremy',parents:[],
    versions:[{v:1,file:'L1_Sizing_Package_Index.gdoc',by:'jeremy',at:d(41),note:'Index document for the Level 1 sizing deliverable set.'}],
    history:[{what:'Created',by:'jeremy',at:d(41)}]},
   {id:'DOC-0132',raci:{r:['jeremy'],a:['braden'],c:['duc','priya'],i:['mitch','scout']},raciBy:'duc',raciAt:d(20,11),desc:'Key value parameters the Level 1 sizing must satisfy, with the compliance table used at sign-off. Scope: aircraft-level requirements only; subsystem allocations live in the mass budget.',level:'aircraft',title:'Level 1 sizing — KVP requirements',type:'pdf',wp:'WP-01',status:'review',by:'jeremy',parents:['DOC-0131'],
+   faa:[{ref:'14 CFR Part 21',why:'Defines the type-certificate application path the KVP set is written against; the compliance table columns follow §21.20.',by:'jeremy',at:d(38),v:1},
+        {ref:'AC 21.17-4',why:'Powered-lift certification basis — range, payload and MTOW KVPs are scoped to the powered-lift class this AC defines, not Part 23 airplanes.',by:'jeremy',at:d(20),v:2},
+        {ref:'PS-AIR-21.17-01',why:'Safety continuum sets the target level of safety the KVP sign-off claims against.',by:'duc',at:d(20,11),v:2}],
    versions:[{v:1,file:'KVP_Requirements_draft.pdf',by:'jeremy',at:d(38),note:'First cut of key value parameters.'},
              {v:2,file:'KVP_Requirements_rev2.pdf',by:'jeremy',at:d(20),note:'Added range and payload KVPs after sizing review.'},
              {v:3,file:'L1_KVP_Requirements_signoff.pdf',by:'jeremy',at:d(3,14),note:'Sign-off copy. Closes action 45033 — updated, archived prior revs, compliance table added.'}],
@@ -496,17 +582,24 @@ let DOCS = [
              {v:2,file:'Mass_Budget_L1.gsheet',by:'priya',at:d(16),note:'Rolled in turbo generator mass from Honeywell data.'}],
    history:[{what:'Created',by:'priya',at:d(35)},{what:'Moved to Braden to review',by:'priya',at:d(16)},{what:'Released',by:'braden',at:d(9)}]},
   {id:'DOC-0134',desc:'Wing loading / disk loading trade and the resulting planform. Scope: aero sizing inputs to Level 1 only.',level:'aircraft',title:'Aero sizing memo',type:'pdf',wp:'WP-01',status:'released',by:'leo',parents:['DOC-0131'],
+   faa:[{ref:'14 CFR Part 23',why:'Stall speed and climb gradient requirements (§23.2110, §23.2120) bound the wing loading side of the trade.',by:'leo',at:d(30),v:1}],
    versions:[{v:1,file:'Aero_Sizing_Memo.pdf',by:'leo',at:d(30),note:'Wing loading and disk loading trade.'}],
    history:[{what:'Created',by:'leo',at:d(30)},{what:'Moved to Braden to review',by:'leo',at:d(28)},{what:'Released',by:'braden',at:d(24)}]},
   {id:'DOC-0140',desc:'System-level definition of the hybrid powertrain: architecture, interfaces, and power split. Scope: everything between fuel in and shaft power out; subsystems are documented under this.',level:'system',title:'Hybrid powertrain system',type:'gdoc',wp:'WP-04',status:'released',by:'duc',parents:[],
+   faa:[{ref:'14 CFR Part 33',why:'The turbo generator core is certified to Part 33; the system definition inherits its rating, interface and limit definitions.',by:'duc',at:d(50),v:1},
+        {ref:'14 CFR Part 23',why:'Powerplant installation requirements (Subpart E) drive the fire-zone, fuel and control interfaces in the architecture.',by:'duc',at:d(12),v:2}],
    versions:[{v:1,file:'Powertrain_System_Definition.gdoc',by:'duc',at:d(50),note:'System-level definition and interface list.'},
              {v:2,file:'Powertrain_System_Definition.gdoc',by:'duc',at:d(12),note:'Interface table updated for turbo generator option B.'}],
    history:[{what:'Created',by:'duc',at:d(50)},{what:'Released',by:'braden',at:d(45)}]},
   {id:'DOC-0141',raci:{r:['duc'],a:['braden'],c:['jeremy','leo'],i:['mitch']},raciBy:'duc',raciAt:d(6,16),desc:'Specification for the turbo generator, including Honeywell option B parameters. Scope: performance envelope, mass, interfaces, environmental limits.',level:'subsystem',title:'Turbo generator specification',type:'pdf',wp:'WP-04',status:'review',by:'duc',parents:['DOC-0140'],
+   faa:[{ref:'14 CFR Part 33',why:'Honeywell option B parameters are quoted against the Part 33 rating definitions so the spec and the engine TC speak the same units.',by:'duc',at:d(22),v:1},
+        {ref:'Order 8110.112A',why:'An issue paper on hybrid-electric generator installation is expected — tracked here so the spec follows it.',by:'duc',at:d(6,16),v:2}],
    versions:[{v:1,file:'TurboGen_Spec_v0.pdf',by:'duc',at:d(22),note:'Draft spec from Honeywell correspondence.'},
              {v:2,file:'TurboGen_Spec_optionB.pdf',by:'duc',at:d(6,16),note:'Option B parameters from the Honeywell development manager email (action 45034).'}],
    history:[{what:'Created',by:'duc',at:d(22)},{what:'Moved to Braden to review',by:'duc',at:d(6,16)}]},
   {id:'DOC-0142',raci:{r:['jeremy'],a:['braden'],c:['priya','leo'],i:['mitch','duc']},raciBy:'scout',raciAt:d(1,9),desc:'Battery pack layout and structural interfaces (STEP model). Scope: 14-module pack, cold plate, mounting brackets. Cell chemistry and BMS are out of scope here.',level:'subsystem',title:'Battery pack design',type:'cad',wp:'WP-04',status:'wip',by:'jeremy',parents:['DOC-0140'],
+   faa:[{ref:'14 CFR Part 23',why:'Pack structural mounts are sized to the §23.2270 emergency-landing load factors; the bracket interfaces inherit those loads.',by:'jeremy',at:d(18),v:1},
+        {ref:'AC 21.17-4',why:'Battery installation falls under powered-lift special conditions; module spacing follows the thermal-runaway propagation expectation this AC points to.',by:'jeremy',at:d(1,8),v:2}],
    versions:[{v:1,file:'BatteryPack_A1.STEP',by:'jeremy',at:d(18),note:'Module layout, 14 modules, cold plate below.'},
              {v:2,file:'BatteryPack_A2.STEP',by:'jeremy',at:d(1,8),note:'Moved cold plate inboard; bracket interfaces per fastener spec rev B.'}],
    history:[{what:'Created',by:'jeremy',at:d(18)}]},
@@ -518,6 +611,7 @@ let DOCS = [
    versions:[{v:1,file:'Pack_Thermal_Calc.gsheet',by:'priya',at:d(5),note:'Steady-state cooling calc, hover case.'}],
    history:[{what:'Created',by:'priya',at:d(5)}]},
   {id:'DOC-0150',desc:'Landing gear concept assembly (SolidWorks). Scope: skid geometry and attach points. Energy absorption analysis to follow as a child document.',level:'system',title:'Landing gear assembly',type:'cad',wp:'WP-08',status:'wip',by:'leo',parents:[],
+   faa:[{ref:'14 CFR Part 23',why:'',by:'leo',at:d(14),v:1}],
    versions:[{v:1,file:'LG_Assy_concept.SLDASM',by:'leo',at:d(14),note:'Concept skid geometry.'}],
    history:[{what:'Created',by:'leo',at:d(14)}]},
   {id:'DOC-0151',desc:'Battery and turbo generator supplier contacts gathered at NBAA. Scope: leads only; no pricing or quotes.',level:'subsystem',title:'Supplier lead sheet — NBAA',type:'gsheet',wp:'WP-11',status:'released',by:'mitch',parents:[],
@@ -528,15 +622,20 @@ let DOCS = [
              {v:2,file:'Process_Automation_Deck_v2.pdf',by:'scout',at:d(4,15),note:'Added Document Manager before/after flows.'}],
    history:[{what:'Created',by:'scout',at:d(13)},{what:'Moved to Braden to review',by:'scout',at:d(4,15)}]},
   {id:'DOC-0153',desc:'Ground test sequence outline for the propulsion system. Scope: test order, instrumentation, pass/fail criteria to be added.',level:'system',title:'Propulsion test plan',type:'gdoc',wp:'WP-04',status:'wip',by:'duc',parents:['DOC-0140'],
+   faa:[{ref:'14 CFR Part 33',why:'Ground test sequence mirrors the Part 33 endurance and calibration test order.',by:'duc',at:d(33),v:1},
+        {ref:'14 CFR Part 21',why:'Test witnessing and conformity under §21.33 / §21.35 set what the FAA must observe — instrumentation list is built from that.',by:'duc',at:d(33),v:1}],
    versions:[{v:1,file:'Propulsion_Test_Plan.gdoc',by:'duc',at:d(33),note:'Ground test sequence outline.'}],
    history:[{what:'Created',by:'duc',at:d(33)}]},
   {id:'DOC-0154',desc:'Initial discussion of certification basis and applicable rules. Scope: aircraft level, regulatory framing only.',level:'aircraft',title:'Certification basis memo',type:'pdf',wp:'WP-13',status:'released',by:'scout',parents:[],
+   faa:[{ref:'14 CFR Part 21',why:'The memo is the first pass at the §21.17 certification basis; applicable-rule list follows Part 21 structure.',by:'scout',at:d(48),v:1},
+        {ref:'Order 8110.48A',why:'The FAA establishes our basis under this order — the memo follows its G-1 issue paper outline so nothing has to be reformatted later.',by:'scout',at:d(48),v:1},
+        {ref:'AC 21.17-4',why:'Powered-lift is certified as a special class under §21.17(b); this AC is the framework the whole memo sits inside.',by:'scout',at:d(48),v:1}],
    versions:[{v:1,file:'Cert_Basis_Memo.pdf',by:'scout',at:d(48),note:'Initial certification basis discussion.'}],
    history:[{what:'Created',by:'scout',at:d(48)},{what:'Released',by:'braden',at:d(40)}]},
 ];
 
 /* ===== state ===== */
-let dOpen={desc:false,own:false,versions:false,tree:false,history:false}, dLinking=false, dEditing=false, dRaciEdit=false;
+let dOpen={desc:false,own:false,versions:false,tree:false,faa:false,history:false}, dLinking=false, dEditing=false, dRaciEdit=false, dCiting=false, citeSel={};
 let showArchived=false;
 let role='scout', view='board', reviewing=false, reviewDays=14, sortK='updated', sortDir=-1, openId=null;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -544,7 +643,15 @@ const byId=id=>DOCS.find(x=>x.id===id);
 const cur=doc=>doc.versions[doc.versions.length-1];
 const updatedAt=doc=>new Date(Math.max(...doc.versions.map(v=>+v.at),...doc.history.map(h=>+h.at)));
 const children=id=>DOCS.filter(x=>x.parents.includes(id));
-const TYPE_LBL={pdf:'PDF',gdoc:'GDOC',gsheet:'SHEET',cad:'CAD'};
+const TYPE_LBL={pdf:'PDF',gdoc:'GDOC',gsheet:'SHEET',cad:'CAD',doc:'DOC',xls:'XLS',img:'IMG',file:'FILE'};
+const TYPE_NAME={pdf:'PDF',gdoc:'Google Doc',gsheet:'Google Sheet',cad:'3D / CAD',doc:'Document',xls:'Spreadsheet',img:'Image',file:'File'};
+/* file type is detected, never chosen: from the extension, or from a Google Docs / Sheets link */
+function detectType(name){ if(!name)return null; const n=name.toLowerCase();
+  if(/docs\.google\.com\/document|\.gdoc$/.test(n))return 'gdoc'; if(/docs\.google\.com\/spreadsheets|\.gsheet$/.test(n))return 'gsheet';
+  const ext=n.split('.').pop();
+  if(['step','stp','sldprt','sldasm','catpart','catproduct','iges','igs','x_t','ipt','iam','prt','dwg','dxf','stl','3mf','obj'].includes(ext))return 'cad';
+  if(ext==='pdf')return 'pdf'; if(['doc','docx','odt','rtf','txt','md','pptx','ppt'].includes(ext))return 'doc'; if(['xls','xlsx','csv','ods'].includes(ext))return 'xls';
+  if(['png','jpg','jpeg','svg','gif','webp','tif','tiff','heic'].includes(ext))return 'img'; return 'file'; }
 const fmtD=t=>t.toLocaleDateString('en-US',{month:'short',day:'numeric'});
 const fmtDT=t=>t.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 const ago=t=>{const h=(TODAY-t)/36e5; if(h<1)return 'just now'; if(h<24)return Math.round(h)+'h ago'; const dd=Math.round(h/24); return dd===1?'yesterday':dd+'d ago'};
@@ -566,7 +673,7 @@ const isComplete=doc=>doc.status==='released'&&rollup(doc.id).complete;
 /* ===== filters ===== */
 function filtered(){ const q=$('#q').value.trim().toLowerCase(), wp=$('#fWp').value, who=$('#fWho').value, ty=$('#fType').value, lv=$('#fLvl').value, mine=$('#fMine').checked;
   return DOCS.filter(x=>(showArchived?!!x.archived:!x.archived)&&(!wp||x.wp===wp)&&(!who||x.by===who)&&(!ty||x.type===ty)&&(!lv||x.level===lv)&&(!mine||x.by===role)&&
-    (!q||x.title.toLowerCase().includes(q)||x.id.toLowerCase().includes(q)||x.versions.some(v=>v.file.toLowerCase().includes(q)))); }
+    (!q||x.title.toLowerCase().includes(q)||x.id.toLowerCase().includes(q)||x.versions.some(v=>v.file.toLowerCase().includes(q))||(x.faa||[]).some(c=>c.ref.toLowerCase().includes(q)))); }
 
 /* ===== render ===== */
 function render(){ const list=filtered();
@@ -588,7 +695,7 @@ function cardHTML(x){ const v=cur(x), r=rollup(x.id), parent=x.parents.map(p=>by
   const flag=flagged?`<div class="flag mt-1">⚠ Released but ${r.total-r.done} ${r.total-r.done===1?'subassembly is':'subassemblies are'} still open</div>`:'';
   return `<article class="doc ${flagged?'flagged':''} ${ch?'changed':''} ${x.archived?'archived':''}" draggable="${canDrag(x)}" tabindex="0" data-id="${x.id}" role="button" aria-label="${esc(x.title)}">
     <div class="d-top"><span class="ftype ${x.type}">${TYPE_LBL[x.type]}</span><h4>${esc(x.title)}</h4><span class="ver">v${v.v}</span></div>
-    <div class="d-meta">${x.archived?'<span class="chip dashed">archived</span>':''}<span class="chip outline">${x.wp}</span>${lvlChip(x.level)}${parent.map(p=>`<span class="chip dashed has-tip" data-tip="Part of ${esc(p.title)}">⌬ ${p.id}</span>`).join('')}
+    <div class="d-meta">${x.archived?'<span class="chip dashed">archived</span>':''}<span class="chip outline">${x.wp}</span>${lvlChip(x.level)}${faaChip(x)}${parent.map(p=>`<span class="chip dashed has-tip" data-tip="Part of ${esc(p.title)}">⌬ ${p.id}</span>`).join('')}
       ${ch?`<span class="delta">● ${deltaLabel(x)}</span>`:''}</div>
     ${roll}${flag}
     ${role==='braden'&&x.status==='review'?`<div class="approve-row"><button class="btn btn-approve" data-approve="${x.id}">✓ Approve &amp; release</button><button class="btn btn-sm btn-ghost" data-sendback="${x.id}" title="Send back to Work in progress">↩ Send back</button></div>`:''}
@@ -652,7 +759,28 @@ function treeNode(x,depth=0,seen=new Set()){ const kids=children(x.id), r=rollup
       <span class="tname" data-go="${x.id}">${esc(x.title)}</span>${x.level?`<i class="lvl-dot" title="${LEVELS[x.level].l} level">L${LEVELS[x.level].n}</i>`:''}${r.total?`<span class="faint" style="font-size:10px">${r.done}/${r.total}</span>`:''}${st}<span class="serial">${x.id}</span></div>
     ${kids.length&&!dup?`<div class="tkids" ${open?'':'hidden'}>${kids.map(k=>treeNode(k,depth+1,seen)).join('')}</div>`:''}`; }
 
-function openDoc(id,keep){ const x=byId(id); if(!x)return; if(!keep&&openId!==id){dOpen={desc:false,own:false,versions:false,tree:false,history:false};dLinking=false;dEditing=false;dRaciEdit=false} openId=id; const v=cur(x), r=rollup(id), parents=x.parents.map(byId).filter(Boolean);
+/* FAA compliance rows — what the engineer cited, why, and the library's own sync state for that record */
+const faaChip=x=>(x.faa||[]).length?`<span class="chip outline faa-n has-tip" data-tip="Cites ${x.faa.map(c=>c.ref).join(' · ')}">§ ${x.faa.length} FAA</span>`:'';
+function faaRowHTML(x,c){ const f=faaOf(c.ref);
+  if(!f)return `<div class="faa-row"><div class="faa-top"><span class="faa-id">${esc(c.ref)}</span><span class="chip danger">not in library</span><button class="unlink has-tip" data-uncite="${esc(c.ref)}" data-tip="Remove reference" aria-label="Remove reference">✕</button></div>
+    <div class="faa-why none">This citation no longer matches a record in the FAA Compliance Library.</div></div>`;
+  const stale=faaDays()>90, st=f.status==='final'?['final','Final']:f.status==='draft'?['needs','Draft']:['needs','Needs review'];
+  return `<div class="faa-row"><div class="faa-top"><span class="faa-id">${esc(f.id)}</span><span class="chip outline ftype-chip">${f.type}</span>
+      <span class="chip dashed has-tip" data-tip="${gateNo(f.gate)} · ${esc(GATES[f.gate])}">${gateNo(f.gate)}</span><span class="chip outline faa-stat ${st[0]}">${st[1]}</span>
+      <a class="btn btn-sm faa-open" href="${f.url}" target="_blank" rel="noopener" title="Open the FAA source document">Open source ↗</a><button class="unlink has-tip" data-uncite="${esc(f.id)}" data-tip="Remove reference" aria-label="Remove reference">✕</button></div>
+    <div class="faa-title">${esc(f.title)}</div>
+    <div class="faa-why ${c.why?'':'none'}">${c.why?esc(c.why):'No justification recorded — say which design decision this rule drove.'}</div>
+    <div class="faa-by"><span class="avatar sm" style="width:16px;height:16px;font-size:7px">${PEOPLE[c.by].ini}</span>Cited by <b>${PEOPLE[c.by].name}</b> · ${fmtDT(c.at)} · at v${c.v}
+      <span class="push ${stale?'stale':''}" title="When the library last checked this record against the FAA">${stale?'⚠ ':''}Checked ${fmtD(FAA_CHECKED)} · D+${faaDays()}</span></div></div>`; }
+function citeHTML(x){ const have=(x.faa||[]).map(c=>c.ref); const avail=FAA_LIB.filter(f=>!have.includes(f.id)); let g=0;
+  return `<div class="cite-pick"><input class="input" id="citeIn" placeholder="Filter the FAA Compliance Library — 14 CFR, AC, Order, Policy, SFAR, gate…" autocomplete="off" aria-label="Filter library">
+    <div class="cite-list" id="citeList" role="group" aria-label="Library documents">${avail.map(f=>`${f.gate!==g?`<div class="lbl" data-gate="${f.gate}">${gateNo(f.gate)} · ${esc(GATES[(g=f.gate)])}</div>`:''}
+      <label class="${citeSel[f.id]!==undefined?'on':''}" data-ref="${esc(f.id)}" data-s="${esc((f.id+' '+f.title+' '+f.type+' '+GATES[f.gate]).toLowerCase())}"><input type="checkbox" ${citeSel[f.id]!==undefined?'checked':''}><span class="ftype-chip">${f.type}</span><span class="pk-t"><b>${esc(f.id)}</b> · ${esc(f.title)}</span></label>`).join('')}
+      <div class="empty" id="citeNone" hidden>No matches in the library</div>${avail.length?'':'<div class="empty">Every library record is already cited.</div>'}</div>
+    <div class="cite-sel" id="citeSel"></div>
+    <div class="row mt-2" style="justify-content:flex-end"><span class="who faint" style="flex:1;font-size:10.5px;line-height:1.4">Only records in the synced library can be cited. Each is logged with your name, the timestamp and v${cur(x).v}.</span><button class="btn btn-sm" id="citeCancel">Cancel</button><button class="btn btn-sm btn-primary" id="citeSave" disabled>Cite</button></div></div>`; }
+
+function openDoc(id,keep){ const x=byId(id); if(!x)return; if(!keep&&openId!==id){dOpen={desc:false,own:false,versions:false,tree:false,faa:false,history:false};dLinking=false;dEditing=false;dRaciEdit=false;dCiting=false;citeSel={}} openId=id; const v=cur(x), r=rollup(id), parents=x.parents.map(byId).filter(Boolean);
   $('#dType').textContent=TYPE_LBL[x.type]; $('#dType').className='ftype '+x.type; $('#dTitle').textContent=x.title; $('#dId').textContent=x.id;
   const rollLine=!r.total?'':r.complete?(x.status==='released'?`<div class="rollup-line ok">✓ Complete — this document and all ${r.total} subassemblies are released.</div>`:`<div class="rollup-line">All ${r.total} subassemblies are released. <b>This document itself is still ${STATUS[x.status].toLowerCase()}.</b></div>`)
     :x.status==='released'?`<div class="rollup-line flag">⚠ Released, but ${r.total-r.done} of ${r.total} subassemblies are still open — not usable as a complete package yet.</div>`
@@ -691,6 +819,10 @@ function openDoc(id,keep){ const x=byId(id); if(!x)return; if(!keep&&openId!==id
         <div class="link-row" id="linkRow" ${dLinking?'':'hidden'}><div class="pick-wrap grow"><input class="input" id="linkIn" placeholder="Search the assembly or system this belongs to…" autocomplete="off"><div class="pick-list" id="linkList"></div></div><button class="btn btn-sm" id="linkCancel">Cancel</button><div class="hint err" id="linkHint" hidden></div></div>
         ${parents.length?`<div class="parents"><div class="lbl">Part of</div>${parents.map(p=>`<div class="tnode"><button class="tog leaf"></button><span class="tname" data-go="${p.id}">↑ ${esc(p.title)}</span>${p.level?`<i class="lvl-dot">L${LEVELS[p.level].n}</i>`:''}<span class="faint" style="font-size:10px">${rollup(p.id).done}/${rollup(p.id).total}</span><span class="serial">${p.id}</span><button class="unlink has-tip" data-unlink="${p.id}" data-tip="Remove from ${esc(p.title)}" aria-label="Remove parent">✕</button></div>`).join('')}</div><div class="lbl">This document${r.total?' and its subassemblies':''}</div>`:`<div class="lbl">${r.total?'Top-level assembly':'Standalone document'}</div>`}
         ${treeNode(x)}</div></div></div>
+    <div class="dsec acc" data-acc="faa"><div class="dx-h"><button class="acc-tog" aria-expanded="${dOpen.faa}" aria-controls="acc-faa"><span class="caret">▾</span>FAA compliance${(x.faa||[]).length?` <span class="count">${x.faa.length}</span>`:''}</button><button class="btn-link" id="dCite">+ Add reference</button></div>
+      <div class="acc-body" id="acc-faa" ${dOpen.faa?"":"hidden"}>${dCiting?citeHTML(x):''}
+        ${(x.faa||[]).length?x.faa.map(c=>faaRowHTML(x,c)).join(''):(dCiting?'':`<div class="empty" style="padding:18px">No FAA references yet — cite the rule, AC or order this document's design decisions answer to.</div>`)}
+        <div class="faa-foot">⟳ Synced from the <a href="${FAA_LIB_URL}" target="_blank" rel="noopener">FAA Compliance Library ↗</a> · ${FAA_LIB.length} records · last checked ${fmtD(FAA_CHECKED)} · D+${faaDays()}</div></div></div>
     <div class="dsec acc" data-acc="history"><div class="dx-h"><button class="acc-tog" aria-expanded="${dOpen.history}" aria-controls="acc-history"><span class="caret">▾</span>History <span class="count">${x.history.length}</span></button></div><div class="acc-body" id="acc-history" ${dOpen.history?"":"hidden"}><div class="hist">${[...x.history].reverse().map(h=>`<div><b>${h.what}</b> · ${PEOPLE[h.by].name}<span class="when">${fmtDT(h.at)}</span></div>`).join('')}</div></div></div>`;
   $$('#steps button').forEach(b=>b.addEventListener('click',()=>moveDoc(id,b.dataset.col)));
   $$('#dBody [data-approve]').forEach(b=>b.addEventListener('click',()=>moveDoc(id,'released')));
@@ -731,6 +863,27 @@ function openDoc(id,keep){ const x=byId(id); if(!x)return; if(!keep&&openId!==id
   linkIn.onfocus=()=>linkIn.oninput(); linkIn.onkeydown=e=>{if(e.key==='Escape'){e.stopPropagation();dLinking=false;openDoc(id,true)}};
   $('#linkCancel').addEventListener('click',()=>{dLinking=false;openDoc(id,true)});
   $$('#dBody [data-unlink]').forEach(b=>b.addEventListener('click',()=>{ const pid=b.dataset.unlink; x.parents=x.parents.filter(z=>z!==pid); x.history.push({what:'Unlinked from '+pid,by:role,at:new Date(TODAY)}); render(); openDoc(id,true); toast(`${x.id} removed from ${pid}`); }));
+  /* FAA compliance: cite from the library, justify, remove — every change is a history entry */
+  $('#dCite').addEventListener('click',()=>{dOpen.faa=true;dCiting=true;citeSel={};openDoc(id,true);const ci=$('#citeIn');if(ci)ci.focus()});
+  const cc=$('#citeCancel'); if(cc)cc.addEventListener('click',()=>{dCiting=false;citeSel={};openDoc(id,true)});
+  const ci=$('#citeIn'), cl=$('#citeList'), csel=$('#citeSel'), csave=$('#citeSave'); if(ci){
+    const n=()=>Object.keys(citeSel).length;
+    const paintSel=()=>{ const refs=Object.keys(citeSel); csave.disabled=!refs.length; csave.textContent=refs.length>1?`Cite ${refs.length} documents`:'Cite';
+      csel.innerHTML=refs.map(r=>{const f=faaOf(r); return `<div class="sel-row" data-ref="${esc(r)}"><div class="faa-top"><span class="faa-id">${esc(f.id)}</span><span class="chip outline ftype-chip">${f.type}</span><span class="chip dashed">${gateNo(f.gate)}</span><span class="grow" style="font-size:var(--fs-xs);color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(f.title)}</span><button class="unlink" data-drop="${esc(r)}" aria-label="Deselect">✕</button></div>
+        <textarea class="input" data-why="${esc(r)}" placeholder="Why does this document answer to ${esc(f.id)}? Name the requirement and the design decision it drove.">${esc(citeSel[r])}</textarea></div>`}).join('');
+      csel.querySelectorAll('[data-why]').forEach(t=>t.addEventListener('input',()=>citeSel[t.dataset.why]=t.value));
+      csel.querySelectorAll('[data-drop]').forEach(b=>b.onclick=()=>{delete citeSel[b.dataset.drop]; const lb=cl.querySelector(`label[data-ref="${CSS.escape(b.dataset.drop)}"]`); if(lb){lb.classList.remove('on');lb.querySelector('input').checked=false} paintSel();}); };
+    cl.querySelectorAll('label').forEach(lb=>lb.querySelector('input').addEventListener('change',e=>{ const r=lb.dataset.ref; if(e.target.checked){citeSel[r]=citeSel[r]||'';lb.classList.add('on')}else{delete citeSel[r];lb.classList.remove('on')} paintSel();
+      if(e.target.checked){const t=csel.querySelector(`[data-why="${CSS.escape(r)}"]`); if(t)t.focus();} }));
+    const filter=()=>{ const q=ci.value.trim().toLowerCase(); let any=false; cl.querySelectorAll('label').forEach(lb=>{const hit=!q||lb.dataset.s.includes(q); lb.hidden=!hit; any=any||hit;});
+      cl.querySelectorAll('.lbl').forEach(l=>{let e=l.nextElementSibling,show=false; while(e&&!e.classList.contains('lbl')&&e.id!=='citeNone'){if(e.tagName==='LABEL'&&!e.hidden)show=true;e=e.nextElementSibling} l.hidden=!show;});
+      $('#citeNone').hidden=any; };
+    ci.addEventListener('input',filter); ci.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();dCiting=false;citeSel={};openDoc(id,true)}});
+    csave.addEventListener('click',()=>{ const refs=Object.keys(citeSel); if(!refs.length)return; x.faa=x.faa||[]; refs.forEach(r=>x.faa.push({ref:r,why:(citeSel[r]||'').trim(),by:role,at:new Date(TODAY),v:cur(x).v}));
+      x.history.push({what:'Cited '+refs.join(', '),by:role,at:new Date(TODAY)}); const missing=refs.filter(r=>!(citeSel[r]||'').trim()).length; dCiting=false; citeSel={}; render(); openDoc(id,true);
+      toast(`${x.id} now cites ${refs.length>1?refs.length+' FAA documents':refs[0]}${missing?` — ${missing} without a justification yet`:''}`,missing?'danger':'success'); });
+    paintSel(); }
+  $$('#dBody [data-uncite]').forEach(b=>b.addEventListener('click',()=>{ const ref=b.dataset.uncite; x.faa=(x.faa||[]).filter(c=>c.ref!==ref); x.history.push({what:'Removed reference '+ref,by:role,at:new Date(TODAY)}); render(); openDoc(id,true); toast(`${x.id} no longer cites ${ref}`); }));
   $('#dArchive').textContent=x.archived?'↩ Restore to board':'⌫ Archive'; $('#dArchive').title=x.archived?'Put this document back on the board':'Remove from the board — kept in the record, restorable';
   $('#dFootNote').textContent=role==='braden'?'You can release from here. Moves are logged with your name and timestamp.':'Status moves are logged with your name and timestamp. Release is Braden\'s call.';
   if(!keep){$('#drawer').classList.add('show');$('#drawerScrim').classList.add('show');$('#drawerClose').focus()} }
@@ -745,64 +898,78 @@ function archiveDoc(id,undo){ const x=byId(id); if(!x)return; x.archived=!undo; 
 $('#dArchive').onclick=()=>{ const x=byId(openId); if(!x)return; if(x.archived)archiveDoc(openId,true); else archiveDoc(openId,false); };
 
 /* ===== upload modal ===== */
-let upMode='new', upTarget=null, upParentsSel=[], upFile=null;
+const UP_BODY_HTML=$('#upBody').innerHTML, UP_FOOT_HTML=$('#upFoot').innerHTML; /* pristine form — restored on every open, since a successful upload replaces both with the pipeline */
+let upMode='new', upTarget=null, upParentsSel=[], upFile=null, upType=null, upFaaSel={}, upFaaLocked=[];
 function nextId(){ return 'DOC-'+String(Math.max(...DOCS.map(x=>+x.id.slice(4)))+1).padStart(4,'0'); }
-function openUpload(mode,targetId){ closeDrawer(); upMode=mode||'new'; upTarget=targetId?byId(targetId):null; upParentsSel=[]; upFile=null;
-  $('#upBody').hidden=false; $('#upFoot').hidden=false; $('#upBody').innerHTML=$('#upBody').innerHTML; /* reset */
-  bindUpload(); setUpMode(upMode); if(upTarget){ $('#upExisting').value=`${upTarget.title} (${upTarget.id})`; upParentsSel=[...upTarget.parents]; renderParentTags(); $('#upWp').value=upTarget.wp; $('#upType').value=upTarget.type; $('#upLvl').value=upTarget.level||''; $('#upDesc').value=upTarget.desc||''; }
+function openUpload(mode,targetId){ closeDrawer(); upMode=mode||'new'; upTarget=targetId?byId(targetId):null; upParentsSel=[]; upFile=null; upType=null; upFaaSel={}; upFaaLocked=[];
+  $('#upBody').hidden=false; $('#upFoot').hidden=false; $('#upBody').innerHTML=UP_BODY_HTML; $('#upFoot').innerHTML=UP_FOOT_HTML; $('#upCancel').onclick=closeUpload; $('#upSubmit').onclick=submitUpload;
+  bindUpload(); setUpMode(upMode); if(upTarget){ $('#upTarget').innerHTML=`<span class="ftype ${upTarget.type}">${TYPE_LBL[upTarget.type]}</span><span><b>${esc(upTarget.title)}</b><span class="serial">${upTarget.id}</span></span><span class="cur">currently v${cur(upTarget).v} · ${esc(cur(upTarget).file)}</span>`; upParentsSel=[...upTarget.parents]; renderParentTags(); loadFaaFrom(upTarget); $('#upWp').value=upTarget.wp; $('#upLvl').value=upTarget.level||''; $('#upDesc').value=upTarget.desc||''; }
   $('#amWho').textContent=PEOPLE[role].name; $('#amWhen').textContent=fmtDT(TODAY); refreshAuto();
   $('#upOvl').classList.add('show'); $('#upScrim').classList.add('show'); setTimeout(()=>$('#upOvl input:not([hidden]), #upOvl .drop')?.focus(),50); }
 function closeUpload(){$('#upOvl').classList.remove('show');$('#upScrim').classList.remove('show')}
-function setUpMode(m){ upMode=m; $$('#upMode button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m)); $('#upExistingWrap').hidden=m!=='version'; $('#upTitleWrap').hidden=m==='version'; $('#upNoteReq').hidden=m!=='version';
-  $('#upTitle').textContent=m==='version'?'Upload a new version':'Upload to Hyperspace'; refreshAuto(); }
-function refreshAuto(){ $('#amId').textContent=upMode==='version'&&upTarget?upTarget.id:nextId(); $('#amVer').textContent=upMode==='version'&&upTarget?'v'+(cur(upTarget).v+1):'v1'; }
+function setUpMode(m){ upMode=m; $('#upExistingWrap').hidden=m!=='version'; $('#upTitleWrap').hidden=m==='version'; $('#upNoteReq').hidden=m!=='version';
+  $('#upTitle').textContent=m==='version'?`New version · ${upTarget?upTarget.id:''}`:'Upload to Hyperspace'; refreshAuto(); }
+function refreshAuto(){ $('#amId').textContent=upMode==='version'&&upTarget?upTarget.id:nextId(); $('#amVer').textContent=upMode==='version'&&upTarget?'v'+(cur(upTarget).v+1):'v1';
+  const t=$('#amType'); if(t){ t.textContent=upType?TYPE_NAME[upType]+(upFile?' · .'+upFile.split('.').pop().toLowerCase():''):'— add a file'; t.style.color=upType?'':'var(--faint)'; } }
 function lvlHint(){ const h=$('#upLvlHint'), lv=$('#upLvl').value; if(!h)return; const ps=upParentsSel.map(byId).filter(p=>p&&p.level);
   if(!lv||!ps.length){h.hidden=true;return} const bad=ps.filter(p=>LEVELS[p.level].n>=LEVELS[lv].n);
   h.hidden=!bad.length; h.className='hint err'; h.textContent=bad.length?`${bad.map(p=>p.id).join(', ')} is ${LEVELS[bad[0].level].l} level — a child usually sits below its parent.`:''; }
 function renderParentTags(){ const box=$('#upParents'); box.querySelectorAll('.tag').forEach(t=>t.remove()); lvlHint();
   upParentsSel.forEach(pid=>{const p=byId(pid); const t=document.createElement('span'); t.className='tag'; t.innerHTML=`⌬ ${esc(p.title)} <span class="serial">${pid}</span><button class="tx" aria-label="Remove">✕</button>`; t.querySelector('.tx').onclick=()=>{upParentsSel=upParentsSel.filter(z=>z!==pid);renderParentTags()}; box.insertBefore(t,$('#upParentIn'))}); }
+/* FAA references at upload — same multi-select as the drawer, in tag-field form. Existing citations on a new-version upload are shown locked. */
+function loadFaaFrom(t){ upFaaSel={}; upFaaLocked=(t.faa||[]).map(c=>c.ref); (t.faa||[]).forEach(c=>upFaaSel[c.ref]=c.why); renderFaaTags(); }
+function renderFaaTags(){ const box=$('#upFaa'), why=$('#upFaaWhy'); if(!box)return; box.querySelectorAll('.tag').forEach(t=>t.remove());
+  Object.keys(upFaaSel).forEach(r=>{ const f=faaOf(r), locked=upFaaLocked.includes(r); const t=document.createElement('span'); t.className='tag'; t.innerHTML=`§ ${esc(r)}${locked?'':'<button class="tx" aria-label="Remove">✕</button>'}`;
+    if(!locked)t.querySelector('.tx').onclick=e=>{e.stopPropagation();delete upFaaSel[r];renderFaaTags()}; box.insertBefore(t,$('#upFaaIn')); });
+  why.innerHTML=Object.keys(upFaaSel).map(r=>{const f=faaOf(r), locked=upFaaLocked.includes(r); return `<div class="sel-row"><span class="faa-id">${esc(r)}<small>${f?esc(f.title):''}${locked?' · already cited':''}</small></span>
+    <textarea class="input ${locked?'locked':''}" data-why="${esc(r)}" ${locked?'readonly title="Edit existing justifications from the document drawer"':''} placeholder="Why does this document answer to ${esc(r)}?">${esc(upFaaSel[r]||'')}</textarea></div>`}).join('');
+  why.querySelectorAll('[data-why]').forEach(t=>t.addEventListener('input',()=>upFaaSel[t.dataset.why]=t.value)); }
+function faaPickList(listEl,q,onPick){ const items=FAA_LIB.filter(f=>upFaaSel[f.id]===undefined&&(f.id.toLowerCase().includes(q)||f.title.toLowerCase().includes(q)||f.type.toLowerCase().includes(q)||GATES[f.gate].toLowerCase().includes(q))).slice(0,8);
+  listEl.innerHTML=items.map(f=>`<button type="button" data-ref="${esc(f.id)}"><span class="ftype-chip">${f.type}</span><span class="pk-t"><b>${esc(f.id)}</b> · ${esc(f.title)}</span><span class="pk-gate" title="${esc(GATES[f.gate])}">G${String(f.gate).padStart(2,'0')}</span></button>`).join('')||'<button type="button" disabled class="muted">No matches in the library</button>';
+  listEl.classList.add('open'); listEl.querySelectorAll('button[data-ref]').forEach(b=>b.onclick=()=>{onPick(b.dataset.ref);listEl.classList.remove('open')}); }
 function pickList(listEl,q,exclude,onPick){ const items=DOCS.filter(x=>!exclude.includes(x.id)&&(x.title.toLowerCase().includes(q)||x.id.toLowerCase().includes(q))).slice(0,8);
   listEl.innerHTML=items.map(x=>`<button type="button" data-id="${x.id}"><span class="ftype ${x.type}" style="width:26px;height:20px;font-size:8.5px;display:inline-grid;place-items:center;border:1px solid var(--line-strong);border-radius:4px">${TYPE_LBL[x.type]}</span>${esc(x.title)}<span class="serial">${x.id}</span></button>`).join('')||'<button type="button" disabled class="muted">No matches</button>';
   listEl.classList.toggle('open',!!q||items.length>0); listEl.querySelectorAll('button[data-id]').forEach(b=>b.onclick=()=>{onPick(b.dataset.id);listEl.classList.remove('open')}); }
 function bindUpload(){
-  $$('#upMode button').forEach(b=>b.onclick=()=>setUpMode(b.dataset.mode)); $('#upLvl').onchange=lvlHint;
+  $('#upLvl').onchange=lvlHint;
   $('#upWp').innerHTML=WPS.map(w=>`<option>${w}</option>`).join('');
-  const ex=$('#upExisting'), exl=$('#upExistingList');
-  ex.oninput=()=>{upTarget=null;pickList(exl,ex.value.toLowerCase(),[],id=>{upTarget=byId(id);ex.value=`${upTarget.title} (${id})`;upParentsSel=[...upTarget.parents];renderParentTags();$('#upWp').value=upTarget.wp;$('#upType').value=upTarget.type;$('#upLvl').value=upTarget.level||'';$('#upDesc').value=upTarget.desc||'';lvlHint();refreshAuto()})};
-  ex.onfocus=()=>ex.oninput();
   const pin=$('#upParentIn'), pl=$('#upParentList');
   pin.oninput=()=>pickList(pl,pin.value.toLowerCase(),[...upParentsSel,upTarget?upTarget.id:''],id=>{upParentsSel.push(id);pin.value='';renderParentTags()});
   pin.onfocus=()=>pin.oninput(); $('#upParents').onclick=()=>pin.focus();
+  const fin=$('#upFaaIn'), fl=$('#upFaaList');
+  fin.oninput=()=>faaPickList(fl,fin.value.toLowerCase(),r=>{upFaaSel[r]='';fin.value='';renderFaaTags();const t=$(`#upFaaWhy [data-why="${CSS.escape(r)}"]`);if(t)t.focus()});
+  fin.onfocus=()=>fin.oninput(); $('#upFaa').onclick=e=>{if(!e.target.closest('.tag'))fin.focus()};
+  renderFaaTags();
   document.addEventListener('click',e=>{if(!e.target.closest('.pick-wrap,.tagf'))$$('.pick-list').forEach(l=>l.classList.remove('open'))});
   const drop=$('#drop'); const setFile=name=>{upFile=name;$('#dropFile').innerHTML=name?`<span class="file">⎙ ${esc(name)} <span class="tx" role="button" aria-label="Remove file">✕</span></span>`:'';
     const tx=$('#dropFile .tx'); if(tx)tx.onclick=e=>{e.stopPropagation();setFile(null)}; if(name&&upMode==='new'&&!$('#upTitleIn').value)$('#upTitleIn').value=name.replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ');
-    const ext=(name||'').split('.').pop().toLowerCase(); if(['step','stp','sldprt','sldasm','catpart','iges','igs'].includes(ext))$('#upType').value='cad'; else if(ext==='pdf')$('#upType').value='pdf'; else if(ext==='gdoc')$('#upType').value='gdoc'; else if(ext==='gsheet')$('#upType').value='gsheet'; };
+    upType=detectType(name); refreshAuto(); if(name&&upMode==='version'&&upTarget&&upType!==upTarget.type)toast(`Heads up: ${TYPE_NAME[upType]} file on a ${TYPE_NAME[upTarget.type]} record — the record's type will follow the new version`,'danger'); };
   drop.onclick=()=>setFile(upMode==='version'&&upTarget?cur(upTarget).file.replace(/(_?v?\d+)?(\.[^.]+)$/,(m,n,e)=>`_rev${(cur(upTarget).v+1)}${e}`):'Pack_Thermal_Report.pdf');
   drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();drop.click()}};
   drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')}; drop.ondragleave=()=>drop.classList.remove('over');
   drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');const f=e.dataTransfer.files[0];setFile(f?f.name:'dropped_file.pdf')};
 }
-$('#uploadBtn').onclick=()=>openUpload('new'); $('#upClose').onclick=closeUpload; $('#upCancel').onclick=closeUpload; $('#upScrim').onclick=closeUpload;
-$('#upSubmit').onclick=()=>{ const note=$('#upNote').value.trim();
+$('#uploadBtn').onclick=()=>openUpload('new'); $('#upClose').onclick=closeUpload; $('#upScrim').onclick=closeUpload;
+function submitUpload(){ const note=$('#upNote').value.trim();
   if(!upFile){toast('Add a file first','danger');return}
-  if(upMode==='version'&&!upTarget){toast('Pick the document this is a new version of','danger');return}
+  if(upMode==='version'&&!upTarget){toast('Start a new version from the record\'s drawer','danger');return}
   if(upMode==='version'&&!note){toast('A change summary is required for new versions','danger');return}
   if(upMode==='new'&&!$('#upTitleIn').value.trim()){toast('Give the document a title','danger');return}
   if(!$('#upLvl').value){toast('Tag the hierarchy level (aircraft, system, subsystem or component)','danger');return}
-  let doc; if(upMode==='version'){ doc=upTarget; doc.versions.push({v:cur(doc).v+1,file:upFile,by:role,at:new Date(TODAY),note}); doc.parents=[...new Set(upParentsSel)]; doc.wp=$('#upWp').value; doc.level=$('#upLvl').value; const nd=$('#upDesc').value.trim(); if(nd!==(doc.desc||'')){doc.desc=nd;doc.history.push({what:'Description updated',by:role,at:new Date(TODAY)})}
+  let doc; if(upMode==='version'){ doc=upTarget; doc.versions.push({v:cur(doc).v+1,file:upFile,by:role,at:new Date(TODAY),note}); doc.type=upType||doc.type; doc.parents=[...new Set(upParentsSel)]; doc.wp=$('#upWp').value; const addRefs=Object.keys(upFaaSel).filter(r=>!upFaaLocked.includes(r)); if(addRefs.length){doc.faa=doc.faa||[]; addRefs.forEach(r=>doc.faa.push({ref:r,why:(upFaaSel[r]||'').trim(),by:role,at:new Date(TODAY),v:cur(doc).v})); doc.history.push({what:'Cited '+addRefs.join(', '),by:role,at:new Date(TODAY)})} doc.level=$('#upLvl').value; const nd=$('#upDesc').value.trim(); if(nd!==(doc.desc||'')){doc.desc=nd;doc.history.push({what:'Description updated',by:role,at:new Date(TODAY)})}
       if(doc.status==='released'){doc.status='wip';doc.history.push({what:'Moved to Work in progress',by:role,at:new Date(TODAY)})} }
-  else { doc={id:nextId(),title:$('#upTitleIn').value.trim(),type:$('#upType').value,wp:$('#upWp').value,level:$('#upLvl').value,desc:$('#upDesc').value.trim(),status:'wip',by:role,parents:[...new Set(upParentsSel)],
+  else { doc={id:nextId(),title:$('#upTitleIn').value.trim(),type:upType||'file',wp:$('#upWp').value,level:$('#upLvl').value,desc:$('#upDesc').value.trim(),status:'wip',by:role,parents:[...new Set(upParentsSel)],faa:Object.keys(upFaaSel).map(r=>({ref:r,why:(upFaaSel[r]||'').trim(),by:role,at:new Date(TODAY),v:1})),
       versions:[{v:1,file:upFile,by:role,at:new Date(TODAY),note:note||'Initial upload.'}],history:[{what:'Created',by:role,at:new Date(TODAY)}]}; DOCS.unshift(doc); }
   /* success pipeline — the moment that replaces every manual step */
   const nodes=[['⛁','Drive'],['◈','Hyperspace DB'],['✦','Knowledge base'],['▦','Google Sheet'],['▦','Smartsheet']];
   $('#upBody').innerHTML=`<div class="note in"><span>✓</span><span><b>${doc.id}</b> · ${esc(doc.title)} · <span class="mono">v${cur(doc).v}</span> — uploaded by ${PEOPLE[role].name}, ${fmtDT(TODAY)}</span></div>
     <div class="pipe" id="pipe">${nodes.map(([i,l],n)=>`${n?'<span class="arrow"></span>':''}<span class="node" data-n="${n}"><i><span class="spinner"></span></i>${l}</span>`).join('')}</div>
-    <div class="hint mt-2" id="pipeHint">Metadata appended: contributor, timestamp, version, change summary, ID. Traceable from this moment.</div>`;
+    <div class="hint mt-2" id="pipeHint">Metadata appended: contributor, timestamp, version, change summary, ID${(doc.faa||[]).length?`, ${doc.faa.length} FAA reference${doc.faa.length>1?'s':''}`:''}. Traceable from this moment.</div>`;
   $('#upFoot').hidden=true;
   nodes.forEach((_,n)=>setTimeout(()=>{const el=$(`#pipe .node[data-n="${n}"]`); if(!el)return; el.classList.add('ok'); el.querySelector('i').textContent='✓';
     if(n===nodes.length-1){ $('#upFoot').hidden=false; $('#upFoot').innerHTML=`<span class="who">${doc.status==='wip'?'Now in Work in progress. Move it to "Braden to review" when it\'s ready.':''}</span><button class="btn" id="upDone">Done</button><button class="btn btn-brand" id="upOpen">Open ${doc.id}</button>`;
       $('#upDone').onclick=closeUpload; $('#upOpen').onclick=()=>{closeUpload();openDoc(doc.id)}; }},350+n*260));
-  render(); toast(`${doc.id} v${cur(doc).v} uploaded`,'success'); };
+  render(); toast(`${doc.id} v${cur(doc).v} uploaded`,'success'); }
 
 /* ===== controls ===== */
 $$('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;$$('[data-view]').forEach(z=>z.setAttribute('aria-pressed',z===b));render()});

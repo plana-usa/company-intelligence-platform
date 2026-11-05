@@ -115,6 +115,11 @@
 .st .status-dot.wip{background:var(--line-strong)}
 .st .status-dot.review{background:var(--brand-orange)}
 .st .status-dot.released{background:var(--success)}
+.st .status-dot.archived{background:var(--line)}
+/* archived rows stay in the table (dimmed) so nothing is ever lost — they only leave the board */
+.table tr.archived td{opacity:.55}
+.table tr.archived td .st{color:var(--muted)}
+.table tr.archived:hover td{opacity:.85}
 
 /* ===== detail drawer ===== */
 .drawer{width:min(600px,100vw)}
@@ -432,7 +437,7 @@
   </div>
   <div class="ovl-body" id="dBody"></div>
   <div class="ovl-foot">
-    <button class="btn btn-ghost btn-sm archive-btn" id="dArchive" title="Remove from the board — kept in the record, restorable">⌫ Archive</button>
+    <button class="btn btn-ghost btn-sm archive-btn" id="dArchive" title="Remove from the board — it stays in the table and can be restored">⌫ Archive</button>
     <span class="who" id="dFootNote">Status moves are logged with your name and timestamp.</span>
     <button class="btn" id="dOpenDrive">Open in Drive ↗</button>
     <button class="btn btn-brand" id="dNewVersion">⇪ New version</button>
@@ -636,7 +641,6 @@ let DOCS = [
 
 /* ===== state ===== */
 let dOpen={desc:false,own:false,versions:false,tree:false,faa:false,history:false}, dLinking=false, dEditing=false, dRaciEdit=false, dCiting=false, citeSel={};
-let showArchived=false;
 let role='scout', view='board', reviewing=false, reviewDays=14, sortK='updated', sortDir=-1, openId=null;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const byId=id=>DOCS.find(x=>x.id===id);
@@ -672,20 +676,19 @@ const isComplete=doc=>doc.status==='released'&&rollup(doc.id).complete;
 
 /* ===== filters ===== */
 function filtered(){ const q=$('#q').value.trim().toLowerCase(), wp=$('#fWp').value, who=$('#fWho').value, ty=$('#fType').value, lv=$('#fLvl').value, mine=$('#fMine').checked;
-  return DOCS.filter(x=>(showArchived?!!x.archived:!x.archived)&&(!wp||x.wp===wp)&&(!who||x.by===who)&&(!ty||x.type===ty)&&(!lv||x.level===lv)&&(!mine||x.by===role)&&
+  return DOCS.filter(x=>(!wp||x.wp===wp)&&(!who||x.by===who)&&(!ty||x.type===ty)&&(!lv||x.level===lv)&&(!mine||x.by===role)&&
     (!q||x.title.toLowerCase().includes(q)||x.id.toLowerCase().includes(q)||x.versions.some(v=>v.file.toLowerCase().includes(q))||(x.faa||[]).some(c=>c.ref.toLowerCase().includes(q)))); }
 
 /* ===== render ===== */
 function render(){ const list=filtered();
-  const nArch=DOCS.filter(x=>x.archived).length, live=DOCS.filter(x=>!x.archived).length;
-  $('#counts').innerHTML=showArchived?`<b>${list.length}</b> archived · <button class="btn-link" id="archBack" style="font-size:12.5px">← back to board</button>`
-    :`<b>${list.length}</b> of ${live} documents · <b>${DOCS.filter(x=>x.status==='review'&&!x.archived).length}</b> waiting on Braden${nArch?` · <button class="btn-link" id="archShow" style="font-size:12.5px;color:var(--faint)">${nArch} archived</button>`:''}`;
-  const ab=$('#archBack'), as=$('#archShow'); if(ab)ab.onclick=()=>{showArchived=false;render()}; if(as)as.onclick=()=>{showArchived=true;render()};
-  $('#feedTitle').textContent=showArchived?'Archived documents':(reviewing?'Bi-weekly review':'Engineering deliverables');
+  const nArch=list.filter(x=>x.archived).length, live=DOCS.filter(x=>!x.archived).length, shown=list.filter(x=>!x.archived).length;
+  $('#counts').innerHTML=`<b>${shown}</b> of ${live} documents · <b>${DOCS.filter(x=>x.status==='review'&&!x.archived).length}</b> waiting on Braden${nArch?` · ${view==='table'?`<span class="faint">${nArch} archived</span>`:`<button class="btn-link has-tip" id="archShow" data-tip="Archived records leave the board but stay in the table" style="font-size:12.5px;color:var(--faint)">${nArch} archived · in table</button>`}`:''}`;
+  const as=$('#archShow'); if(as)as.onclick=()=>{ setView('table'); sortK='status'; sortDir=-1; render(); };
+  $('#feedTitle').textContent=reviewing?'Bi-weekly review':'Engineering deliverables';
   $('#sideReviewCnt').textContent=DOCS.filter(x=>x.status==='review').length;
   $('#board').hidden=view!=='board'; $('#tableWrap').hidden=view!=='table';
   $('#board').classList.toggle('reviewing',reviewing); $('#table').classList.toggle('reviewing',reviewing);
-  $('#hint').textContent=reviewing?`Highlighted: changed since ${fmtD(since())} · dimmed: unchanged`:view==='board'?'Drag cards between columns to change status · click a card for versions & assembly':'Click a column header to sort · click a row for versions & assembly';
+  $('#hint').textContent=reviewing?`Highlighted: changed since ${fmtD(since())} · dimmed: unchanged`:view==='board'?'Drag cards between columns to change status · click a card for versions & assembly':'Click a column header to sort · click a row for versions & assembly · archived records stay here, dimmed';
   view==='board'?renderBoard(list):renderTable(list); renderStrip(list); }
 
 function cardHTML(x){ const v=cur(x), r=rollup(x.id), parent=x.parents.map(p=>byId(p)).filter(Boolean);
@@ -702,7 +705,7 @@ function cardHTML(x){ const v=cur(x), r=rollup(x.id), parent=x.parents.map(p=>by
     <div class="d-foot"><span class="avatar sm" title="${PEOPLE[x.by].name}">${PEOPLE[x.by].ini}</span><span class="when">${ago(updatedAt(x))}</span><span class="serial">${x.id}</span></div>
   </article>`; }
 
-function renderBoard(list){ $$('.col-kb').forEach(col=>{ const k=col.dataset.col, items=list.filter(x=>x.status===k).sort((a,b)=>updatedAt(b)-updatedAt(a));
+function renderBoard(list){ $$('.col-kb').forEach(col=>{ const k=col.dataset.col, items=list.filter(x=>x.status===k&&!x.archived).sort((a,b)=>updatedAt(b)-updatedAt(a));
     col.querySelector('[data-cnt]').textContent=items.length;
     col.querySelector('.col-body').innerHTML=items.length?items.map(cardHTML).join(''):`<div class="empty">Nothing here${k==='review'?' — Braden\'s queue is clear':''}.</div>`; });
   $$('[data-approve]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();moveDoc(b.dataset.approve,'released')}));
@@ -712,13 +715,13 @@ function renderBoard(list){ $$('.col-kb').forEach(col=>{ const k=col.dataset.col
     el.addEventListener('dragend',()=>el.classList.remove('dragging')); }); }
 
 function renderTable(list){ const dir=sortDir, k=sortK;
-  const val=x=>({id:x.id,title:x.title,wp:x.wp,level:x.level&&LEVELS[x.level]?LEVELS[x.level].n:9,status:['wip','review','released'].indexOf(x.status),ver:cur(x).v,by:PEOPLE[x.by].name,updated:+updatedAt(x)}[k]);
+  const val=x=>({id:x.id,title:x.title,wp:x.wp,level:x.level&&LEVELS[x.level]?LEVELS[x.level].n:9,status:x.archived?3:['wip','review','released'].indexOf(x.status),ver:cur(x).v,by:PEOPLE[x.by].name,updated:+updatedAt(x)}[k]);
   list=[...list].sort((a,b)=>{const A=val(a),B=val(b); return (A>B?1:A<B?-1:0)*dir});
   $$('#table th').forEach(th=>th.removeAttribute('aria-sort')); const th=$(`#table th[data-k="${k}"]`); if(th)th.setAttribute('aria-sort',dir>0?'ascending':'descending');
   $('#table tbody').innerHTML=list.map(x=>{const r=rollup(x.id),v=cur(x),ch=reviewing&&changedSince(x);
     const asm=r.total?`<span class="${r.complete?'muted':''}">${r.done}/${r.total} released</span>`:(x.parents.length?`<span class="muted">part of ${x.parents.join(', ')}</span>`:'<span class="faint">—</span>');
-    return `<tr class="${ch?'changed':''}" data-id="${x.id}" tabindex="0"><td class="mono">${x.id}</td><td><span class="ftype">${TYPE_LBL[x.type]}</span><b>${esc(x.title)}</b>${ch?` <span class="delta">● ${deltaLabel(x)}</span>`:''}</td>
-      <td>${x.wp}</td><td>${lvlChip(x.level,'sm')||'<span class="faint">—</span>'}</td><td><span class="st"><span class="status-dot ${x.status}"></span>${STATUS[x.status]}</span></td><td>${asm}</td><td class="num">v${v.v}</td>
+    return `<tr class="${ch?'changed':''} ${x.archived?'archived':''}" data-id="${x.id}" tabindex="0" ${x.archived?'title="Archived — open to restore to the board"':''}><td class="mono">${x.id}</td><td><span class="ftype">${TYPE_LBL[x.type]}</span><b>${esc(x.title)}</b>${ch?` <span class="delta">● ${deltaLabel(x)}</span>`:''}</td>
+      <td>${x.wp}</td><td>${lvlChip(x.level,'sm')||'<span class="faint">—</span>'}</td><td>${x.archived?`<span class="st"><span class="status-dot archived"></span>Archived <span class="faint" style="font-size:10.5px">· was ${STATUS[x.status]}</span></span>`:`<span class="st"><span class="status-dot ${x.status}"></span>${STATUS[x.status]}</span>`}</td><td>${asm}</td><td class="num">v${v.v}</td>
       <td>${PEOPLE[x.by].name}</td><td>${fmtD(updatedAt(x))} <span class="faint">${ago(updatedAt(x))}</span></td></tr>`}).join('');
   $$('#table tbody tr').forEach(tr=>{tr.style.cursor='pointer'; tr.addEventListener('click',()=>openDoc(tr.dataset.id)); tr.addEventListener('keydown',e=>{if(e.key==='Enter')openDoc(tr.dataset.id)})}); }
 
@@ -884,7 +887,7 @@ function openDoc(id,keep){ const x=byId(id); if(!x)return; if(!keep&&openId!==id
       toast(`${x.id} now cites ${refs.length>1?refs.length+' FAA documents':refs[0]}${missing?` — ${missing} without a justification yet`:''}`,missing?'danger':'success'); });
     paintSel(); }
   $$('#dBody [data-uncite]').forEach(b=>b.addEventListener('click',()=>{ const ref=b.dataset.uncite; x.faa=(x.faa||[]).filter(c=>c.ref!==ref); x.history.push({what:'Removed reference '+ref,by:role,at:new Date(TODAY)}); render(); openDoc(id,true); toast(`${x.id} no longer cites ${ref}`); }));
-  $('#dArchive').textContent=x.archived?'↩ Restore to board':'⌫ Archive'; $('#dArchive').title=x.archived?'Put this document back on the board':'Remove from the board — kept in the record, restorable';
+  $('#dArchive').textContent=x.archived?'↩ Restore to board':'⌫ Archive'; $('#dArchive').title=x.archived?'Put this document back on the board':'Remove from the board — it stays in the table and can be restored';
   $('#dFootNote').textContent=role==='braden'?'You can release from here. Moves are logged with your name and timestamp.':'Status moves are logged with your name and timestamp. Release is Braden\'s call.';
   if(!keep){$('#drawer').classList.add('show');$('#drawerScrim').classList.add('show');$('#drawerClose').focus()} }
 function closeDrawer(){$('#drawer').classList.remove('show');$('#drawerScrim').classList.remove('show');openId=null}
@@ -892,7 +895,7 @@ $('#drawerClose').onclick=closeDrawer; $('#drawerScrim').onclick=closeDrawer;
 $('#dNewVersion').onclick=()=>openUpload('version',openId);
 $('#dOpenDrive').onclick=()=>toast('Opens the current version in Google Drive');
 function archiveDoc(id,undo){ const x=byId(id); if(!x)return; x.archived=!undo; x.history.push({what:undo?'Restored to board':'Archived',by:role,at:new Date(TODAY)});
-  if(!undo){ closeDrawer(); render(); const h=$('#toastHost'); h.innerHTML=`<div class="toast"><span class="tdot"></span>${esc(x.id)} archived — off the board, still in the record <button class="toast-link" id="undoArch">Undo</button></div>`;
+  if(!undo){ closeDrawer(); render(); const h=$('#toastHost'); h.innerHTML=`<div class="toast"><span class="tdot"></span>${esc(x.id)} archived — off the board, still in the table <button class="toast-link" id="undoArch">Undo</button></div>`;
     $('#undoArch').onclick=()=>archiveDoc(id,true); clearTimeout(h._t); h._t=setTimeout(()=>h.innerHTML='',6000); }
   else { render(); if(openId===id)openDoc(id,true); toast(`${x.id} restored to the board`,'success'); } }
 $('#dArchive').onclick=()=>{ const x=byId(openId); if(!x)return; if(x.archived)archiveDoc(openId,true); else archiveDoc(openId,false); };
@@ -972,7 +975,8 @@ function submitUpload(){ const note=$('#upNote').value.trim();
   render(); toast(`${doc.id} v${cur(doc).v} uploaded`,'success'); }
 
 /* ===== controls ===== */
-$$('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;$$('[data-view]').forEach(z=>z.setAttribute('aria-pressed',z===b));render()});
+function setView(v){ view=v; $$('[data-view]').forEach(z=>z.setAttribute('aria-pressed',z.dataset.view===v)); }
+$$('[data-view]').forEach(b=>b.onclick=()=>{setView(b.dataset.view);render()});
 $$('#roleSeg button').forEach(b=>b.onclick=()=>{role=b.dataset.role;$$('#roleSeg button').forEach(z=>z.setAttribute('aria-pressed',z===b));$('#fMine').nextSibling.textContent=' Mine';render();if(openId)openDoc(openId,true);toast(`Acting as ${PEOPLE[role].name}`)});
 ['#q','#fWp','#fWho','#fLvl','#fType','#fMine'].forEach(s=>$(s).addEventListener('input',()=>{const el=$(s); if(el.tagName==='SELECT')el.classList.toggle('changed',!!el.value); render()}));
 $('#reviewToggle').onclick=()=>{reviewing=!reviewing;$('#reviewToggle').setAttribute('aria-pressed',reviewing);$('#feedTitle').textContent=reviewing?'Bi-weekly review':'Engineering deliverables';render()};
